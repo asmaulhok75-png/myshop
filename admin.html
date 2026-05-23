@@ -515,7 +515,7 @@ function refreshAll() {
 function renderDashboard() {
   const { products, orders } = loadData();
   const pending = orders.filter(o => o.status === 'pending').length;
-  const revenue = orders.filter(o => o.status === 'delivered').reduce((s, o) => s + o.total, 0);
+  const revenue = orders.filter(o => o.status !== 'cancelled').reduce((s, o) => s + (Number(o.total) || 0), 0);
   document.getElementById('stat-products').textContent = products.length;
   document.getElementById('stat-orders').textContent = orders.length;
   document.getElementById('stat-pending').textContent = pending;
@@ -791,6 +791,12 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
     if (e.target === overlay) overlay.classList.remove('open');
   });
 });
+
+// Auto-refresh every 10 seconds
+setInterval(() => {
+  const adminVisible = document.getElementById('admin-screen').style.display !== 'none';
+  if (adminVisible) { renderDashboard(); renderOrders(currentFilter); }
+}, 10000);
 </script>
 </body>
 </html>
