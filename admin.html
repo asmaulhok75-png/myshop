@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>nobobi.com — Admin Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #222; }
+
+    /* ===== LOGIN SCREEN ===== */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh; background: linear-gradient(135deg, #1565c0, #1976d2);
+    }
+    .login-box {
+      background: white; border-radius: 12px; padding: 40px 36px;
+      width: 360px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center;
+    }
+    .login-box h2 { font-size: 22px; margin-bottom: 6px; color: #1565c0; }
+    .login-box p { font-size: 13px; color: #777; margin-bottom: 24px; }
+    .login-box input {
+      width: 100%; padding: 10px 14px; border: 1.5px solid #ddd;
+      border-radius: 8px; font-size: 14px; margin-bottom: 14px; outline: none;
+    }
+    .login-box input:focus { border-color: #1976d2; }
+    .login-box button {
+      width: 100%; padding: 11px; background: #1976d2; color: white;
+      border: none; border-radius: 8px; font-size: 15px; cursor: pointer;
+      font-weight: 600;
+    }
+    .login-box button:hover { background: #1565c0; }
+    .login-error { color: red; font-size: 13px; margin-top: 10px; display: none; }
+
+    /* ===== ADMIN LAYOUT ===== */
+    #admin-screen { display: none; }
+    .topbar {
+      background: #1976d2; color: white; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between; height: 56px;
+    }
+    .topbar .brand { font-size: 18px; font-weight: 700; }
+    .topbar .brand span { opacity: 0.7; font-weight: 400; font-size: 13px; margin-left: 8px; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-right a {
+      color: white; text-decoration: none; font-size: 13px;
+      background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 6px;
+    }
+    .topbar-right a:hover { background: rgba(255,255,255,0.25); }
+    .logout-btn {
+      background: rgba(255,255,255,0.15); border: none; color: white;
+      padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.3); }
+
+    .layout { display: flex; min-height: calc(100vh - 56px); }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 210px; background: #1a237e; color: white;
+      padding: 20px 0; flex-shrink: 0;
+    }
+    .sidebar-menu a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 20px; color: rgba(255,255,255,0.8);
+      text-decoration: none; font-size: 14px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: rgba(255,255,255,0.12); color: white;
+    }
+    .sidebar-menu a .icon { font-size: 16px; width: 20px; text-align: center; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main { flex: 1; padding: 24px; overflow-y: auto; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #1a237e; }
+
+    /* DASHBOARD STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: white; border-radius: 10px; padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center;
+      border-top: 4px solid;
+    }
+    .stat-card:nth-child(1) { border-color: #1976d2; }
+    .stat-card:nth-child(2) { border-color: #2e7d32; }
+    .stat-card:nth-child(3) { border-color: #f57c00; }
+    .stat-card:nth-child(4) { border-color: #c62828; }
+    .stat-card .num { font-size: 28px; font-weight: 700; margin: 6px 0; }
+    .stat-card .lbl { font-size: 12px; color: #888; }
+    .stat-card .icon { font-size: 22px; }
+
+    /* TABLES */
+    .card {
+      background: white; border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
+    }
+    .card-header {
+      padding: 16px 20px; border-bottom: 1px solid #eee;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-header h3 { font-size: 15px; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f5f7fa; padding: 10px 14px; text-align: left; font-size: 13px; color: #555; font-weight: 600; }
+    td { padding: 10px 14px; font-size: 13px; border-top: 1px solid #f0f0f0; vertical-align: middle; }
+    tr:hover td { background: #fafbff; }
+
+    /* BUTTONS */
+    .btn {
+      padding: 7px 14px; border: none; border-radius: 6px; cursor: pointer;
+      font-size: 13px; font-weight: 500;
+    }
+    .btn-primary { background: #1976d2; color: white; }
+    .btn-primary:hover { background: #1565c0; }
+    .btn-success { background: #2e7d32; color: white; }
+    .btn-success:hover { background: #1b5e20; }
+    .btn-danger { background: #c62828; color: white; }
+    .btn-danger:hover { background: #b71c1c; }
+    .btn-warning { background: #f57c00; color: white; }
+    .btn-warning:hover { background: #e65100; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    /* BADGE */
+    .badge {
+      display: inline-block; padding: 3px 8px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .badge-green { background: #e8f5e9; color: #2e7d32; }
+    .badge-red { background: #ffebee; color: #c62828; }
+    .badge-orange { background: #fff3e0; color: #e65100; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white; border-radius: 12px; padding: 28px;
+      width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 20px; color: #1a237e; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; font-weight: 500; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 9px 12px; border: 1.5px solid #ddd;
+      border-radius: 7px; font-size: 14px; outline: none; font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1976d2; }
+    .form-group textarea { height: 80px; resize: vertical; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+    /* SEARCH BAR */
+    .search-bar {
+      display: flex; gap: 10px; margin-bottom: 16px; align-items: center;
+    }
+    .search-bar input {
+      padding: 8px 12px; border: 1.5px solid #ddd; border-radius: 7px;
+      font-size: 13px; outline: none; width: 240px;
+    }
+    .search-bar input:focus { border-color: #1976d2; }
+
+    /* ORDER STATUS */
+    .order-actions { display: flex; gap: 6px; }
+
+    /* PRODUCT EMOJI */
+    .product-emoji { font-size: 24px; }
+
+    /* NOTIFICATION */
+    .notif {
+      position: fixed; top: 70px; right: 20px; z-index: 9999;
+      background: #2e7d32; color: white; padding: 12px 20px;
+      border-radius: 8px; font-size: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      display: none; animation: slideIn 0.3s ease;
+    }
+    .notif.error { background: #c62828; }
+    @keyframes slideIn { from { transform: translateX(60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 48px 0; color: #aaa; }
+    .empty-state .icon { font-size: 40px; margin-bottom: 10px; }
+    .empty-state p { font-size: 14px; }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .sidebar { width: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======= LOGIN ======= -->
+<div id="login-screen">
+  <div class="login-box">
+    <div style="font-size:36px;margin-bottom:10px">🛒</div>
+    <h2>nobobi.com</h2>
+    <p>Admin Panel — লগইন করুন</p>
+    <input type="text" id="login-user" placeholder="Username" />
+    <input type="password" id="login-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button onclick="doLogin()">লগইন করুন</button>
+    <div class="login-error" id="login-error">❌ ভুল Username বা Password!</div>
+    <p style="font-size:11px;color:#bbb;margin-top:16px">Default: admin / admin123</p>
+  </div>
+</div>
+
+<!-- ======= ADMIN ======= -->
+<div id="admin-screen">
+  <div class="topbar">
+    <div class="brand">🛒 nobobi.com <span>Admin Panel</span></div>
+    <div class="topbar-right">
+      <a href="index.html" target="_blank">🌐 Customer সাইট দেখুন</a>
+      <button class="logout-btn" onclick="doLogout()">🚪 লগআউট</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-menu">
+        <a class="active" onclick="showPage('dashboard')" id="nav-dashboard">
+          <span class="icon">📊</span> ড্যাশবোর্ড
+        </a>
+        <a onclick="showPage('products')" id="nav-products">
+          <span class="icon">📦</span> পণ্য ম্যানেজ
+        </a>
+        <a onclick="showPage('orders')" id="nav-orders">
+          <span class="icon">🧾</span> অর্ডার
+        </a>
+        <a onclick="showPage('categories')" id="nav-categories">
+          <span class="icon">🏷️</span> ক্যাটাগরি
+        </a>
+        <a onclick="showPage('settings')" id="nav-settings">
+          <span class="icon">⚙️</span> সেটিংস
+        </a>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">📊 ড্যাশবোর্ড</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="icon">📦</div>
+            <div class="num" id="stat-products">0</div>
+            <div class="lbl">মোট পণ্য</div>
+          </div>
+          <div class="stat-card">
+            <div class="icon">🧾</div>
+            <div class="num" id="stat-orders">0</div>
+            <div class="lbl">মোট অর্ডার</div>
+          </div>
+          <div class="stat-card">
+            <div class="icon">⏳</div>
+            <div class="num" id="stat-pending">0</div>
+            <div class="lbl">পেন্ডিং অর্ডার</div>
+          </div>
+          <div class="stat-card">
+            <div class="icon">💰</div>
+            <div class="num" id="stat-revenue">৳0</div>
+            <div class="lbl">মোট রাজস্ব</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>🕐 সাম্প্রতিক অর্ডার</h3></div>
+          <table>
+            <thead><tr>
+              <th>অর্ডার ID</th><th>গ্রাহক</th><th>পণ্য</th>
+              <th>মোট</th><th>স্ট্যাটাস</th><th>তারিখ</th>
+            </tr></thead>
+            <tbody id="recent-orders-body">
+              <tr><td colspan="6"><div class="empty-state"><div class="icon">📭</div><p>কোনো অর্ডার নেই</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="page" id="page-products">
+        <div class="page-title">📦 পণ্য ম্যানেজ</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div class="search-bar">
+            <input type="text" id="product-search" placeholder="পণ্য খুঁজুন..." oninput="renderProducts()" />
+          </div>
+          <button class="btn btn-primary" onclick="openProductModal()">+ নতুন পণ্য যোগ</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr>
+              <th>পণ্য</th><th>ক্যাটাগরি</th><th>দাম</th>
+              <th>ছাড়</th><th>স্টক</th><th>অ্যাকশন</th>
+            </tr></thead>
+            <tbody id="products-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="page" id="page-orders">
+        <div class="page-title">🧾 অর্ডার ম্যানেজ</div>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <button class="btn btn-sm btn-primary" onclick="filterOrders('all')">সব</button>
+          <button class="btn btn-sm btn-warning" onclick="filterOrders('pending')">পেন্ডিং</button>
+          <button class="btn btn-sm btn-success" onclick="filterOrders('delivered')">ডেলিভার্ড</button>
+          <button class="btn btn-sm btn-danger" onclick="filterOrders('cancelled')">বাতিল</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr>
+              <th>অর্ডার ID</th><th>গ্রাহক</th><th>ফোন</th>
+              <th>পণ্য</th><th>মোট</th><th>স্ট্যাটাস</th><th>তারিখ</th><th>অ্যাকশন</th>
+            </tr></thead>
+            <tbody id="orders-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="page" id="page-categories">
+        <div class="page-title">🏷️ ক্যাটাগরি</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+          <button class="btn btn-primary" onclick="openCatModal()">+ নতুন ক্যাটাগরি</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>ইমোজি</th><th>ক্যাটাগরি নাম</th><th>পণ্য সংখ্যা</th><th>অ্যাকশন</th></tr></thead>
+            <tbody id="categories-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-title">⚙️ সেটিংস</div>
+        <div class="card" style="padding:24px;max-width:440px">
+          <h3 style="margin-bottom:18px;font-size:15px">🔑 পাসওয়ার্ড পরিবর্তন</h3>
+          <div class="form-group">
+            <label>নতুন Username</label>
+            <input type="text" id="new-username" placeholder="নতুন username লিখুন" />
+          </div>
+          <div class="form-group">
+            <label>নতুন Password</label>
+            <input type="password" id="new-password" placeholder="নতুন password লিখুন" />
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()">সেভ করুন</button>
+        </div>
+        <div class="card" style="padding:24px;max-width:440px;margin-top:20px">
+          <h3 style="margin-bottom:14px;font-size:15px">🗑️ ডেটা রিসেট</h3>
+          <p style="font-size:13px;color:#888;margin-bottom:14px">সব পণ্য ও অর্ডার ডিফল্টে ফিরিয়ে আনুন।</p>
+          <button class="btn btn-danger" onclick="resetData()">ডেটা রিসেট করুন</button>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+</div><!-- /admin-screen -->
+
+<!-- ======= PRODUCT MODAL ======= -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal">
+    <h3 id="product-modal-title">নতুন পণ্য যোগ করুন</h3>
+    <input type="hidden" id="edit-product-id" />
+    <div class="form-group">
+      <label>পণ্যের নাম *</label>
+      <input type="text" id="p-name" placeholder="যেমন: কটন শার্ট" />
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group">
+        <label>দাম (৳) *</label>
+        <input type="number" id="p-price" placeholder="850" />
+      </div>
+      <div class="form-group">
+        <label>আসল দাম (৳)</label>
+        <input type="number" id="p-original" placeholder="1100" />
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group">
+        <label>ছাড় (%)</label>
+        <input type="number" id="p-discount" placeholder="22" />
+      </div>
+      <div class="form-group">
+        <label>স্টক</label>
+        <input type="number" id="p-stock" placeholder="100" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>ক্যাটাগরি *</label>
+      <select id="p-category"></select>
+    </div>
+    <div class="form-group">
+      <label>পণ্যের ইমোজি</label>
+      <input type="text" id="p-emoji" placeholder="যেমন: 👕" maxlength="4" />
+    </div>
+    <div class="form-group">
+      <label>বিবরণ</label>
+      <textarea id="p-desc" placeholder="পণ্যের বিবরণ লিখুন..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeProductModal()" style="background:#eee">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveProduct()">সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= CATEGORY MODAL ======= -->
+<div class="modal-overlay" id="cat-modal">
+  <div class="modal" style="width:340px">
+    <h3>নতুন ক্যাটাগরি</h3>
+    <input type="hidden" id="edit-cat-id" />
+    <div class="form-group">
+      <label>ক্যাটাগরি নাম *</label>
+      <input type="text" id="cat-name" placeholder="যেমন: খাবার" />
+    </div>
+    <div class="form-group">
+      <label>ইমোজি</label>
+      <input type="text" id="cat-emoji" placeholder="🍔" maxlength="4" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeCatModal()" style="background:#eee">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveCat()">সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+
+<script>
+// ===== DATA =====
+const DEFAULT_PRODUCTS = [
+  { id: 1, name: 'কটন শার্ট', price: 650, original: 900, discount: 28, category: 'কাপড়', emoji: '👕', stock: 50, desc: 'আরামদায়ক কটন শার্ট' },
+  { id: 2, name: 'ডেনিম জিন্স', price: 1200, original: 1600, discount: 25, category: 'কাপড়', emoji: '👖', stock: 30, desc: 'টেকসই ডেনিম জিন্স' },
+  { id: 3, name: 'ব্লুটুথ হেডফোন', price: 2500, original: 3200, discount: 22, category: 'ইলেকট্রনিক্স', emoji: '🎧', stock: 20, desc: 'ওয়্যারলেস হেডফোন' },
+  { id: 4, name: 'স্মার্টওয়াচ', price: 4500, original: 5800, discount: 22, category: 'ইলেকট্রনিক্স', emoji: '⌚', stock: 15, desc: 'স্মার্ট ওয়াচ' },
+  { id: 5, name: 'কুর্তি', price: 800, original: 1100, discount: 27, category: 'কাপড়', emoji: '👗', stock: 40, desc: 'সুন্দর কুর্তি' },
+  { id: 6, name: 'ইয়ারবাড', price: 1800, original: 2200, discount: 18, category: 'ইলেকট্রনিক্স', emoji: '🎵', stock: 25, desc: 'ওয়্যারলেস ইয়ারবাড' },
+];
+
+const DEFAULT_CATEGORIES = [
+  { id: 1, name: 'কাপড়', emoji: '👕' },
+  { id: 2, name: 'ইলেকট্রনিক্স', emoji: '📱' },
+  { id: 3, name: 'খাবার', emoji: '🍎' },
+  { id: 4, name: 'বিউটি', emoji: '💄' },
+  { id: 5, name: 'ঘরের জিনিস', emoji: '🏠' },
+];
+
+const DEFAULT_ORDERS = [
+  { id: 'ORD-001', customer: 'রাহেলা বেগম', phone: '01711234567', product: 'কটন শার্ট', total: 650, status: 'pending', date: '২২ মে ২০২৬' },
+  { id: 'ORD-002', customer: 'করিম সাহেব', phone: '01812345678', product: 'ব্লুটুথ হেডফোন', total: 2500, status: 'delivered', date: '২১ মে ২০২৬' },
+  { id: 'ORD-003', customer: 'সুমাইয়া আক্তার', phone: '01912345678', product: 'ডেনিম জিন্স', total: 1200, status: 'pending', date: '২০ মে ২০২৬' },
+];
+
+function loadData() {
+  return {
+    products: JSON.parse(localStorage.getItem('nb_products') || 'null') || DEFAULT_PRODUCTS,
+    categories: JSON.parse(localStorage.getItem('nb_categories') || 'null') || DEFAULT_CATEGORIES,
+    orders: JSON.parse(localStorage.getItem('nb_orders') || 'null') || DEFAULT_ORDERS,
+    creds: JSON.parse(localStorage.getItem('nb_creds') || 'null') || { user: 'admin', pass: 'admin123' },
+  };
+}
+
+function saveProducts(p) { localStorage.setItem('nb_products', JSON.stringify(p)); }
+function saveCategories(c) { localStorage.setItem('nb_categories', JSON.stringify(c)); }
+function saveOrders(o) { localStorage.setItem('nb_orders', JSON.stringify(o)); }
+function saveCreds(c) { localStorage.setItem('nb_creds', JSON.stringify(c)); }
+
+// ===== AUTH =====
+function doLogin() {
+  const { creds } = loadData();
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if (u === creds.user && p === creds.pass) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    refreshAll();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-pass').value = '';
+}
+
+// ===== NAVIGATION =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'products') renderProducts();
+  if (name === 'orders') renderOrders('all');
+  if (name === 'categories') renderCategories();
+}
+
+function refreshAll() {
+  renderDashboard();
+  renderProducts();
+  renderOrders('all');
+  renderCategories();
+}
+
+// ===== DASHBOARD =====
+function renderDashboard() {
+  const { products, orders } = loadData();
+  const pending = orders.filter(o => o.status === 'pending').length;
+  const revenue = orders.filter(o => o.status === 'delivered').reduce((s, o) => s + o.total, 0);
+  document.getElementById('stat-products').textContent = products.length;
+  document.getElementById('stat-orders').textContent = orders.length;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-revenue').textContent = '৳' + revenue.toLocaleString('bn-BD');
+
+  const tbody = document.getElementById('recent-orders-body');
+  const recent = [...orders].slice(-5).reverse();
+  if (!recent.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">📭</div><p>কোনো অর্ডার নেই</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = recent.map(o => `
+    <tr>
+      <td><b>${o.id}</b></td>
+      <td>${o.customer}</td>
+      <td>${o.product}</td>
+      <td>৳${o.total.toLocaleString()}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td>${o.date}</td>
+    </tr>
+  `).join('');
+}
+
+// ===== PRODUCTS =====
+function renderProducts() {
+  const { products, categories } = loadData();
+  const q = (document.getElementById('product-search')?.value || '').toLowerCase();
+  const filtered = products.filter(p => p.name.toLowerCase().includes(q));
+  const tbody = document.getElementById('products-body');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">📦</div><p>কোনো পণ্য নেই</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(p => `
+    <tr>
+      <td><span style="font-size:20px">${p.emoji||'📦'}</span> <b>${p.name}</b></td>
+      <td>${p.category}</td>
+      <td>৳${p.price.toLocaleString()}</td>
+      <td>${p.discount ? `<span class="badge badge-red">${p.discount}% ছাড়</span>` : '—'}</td>
+      <td>${p.stock > 0 ? `<span class="badge badge-green">${p.stock} টি</span>` : '<span class="badge badge-red">স্টক শেষ</span>'}</td>
+      <td>
+        <button class="btn btn-warning btn-sm" onclick="openProductModal(${p.id})">✏️ এডিট</button>
+        <button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteProduct(${p.id})">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openProductModal(id) {
+  const { products, categories } = loadData();
+  // populate category select
+  const sel = document.getElementById('p-category');
+  sel.innerHTML = categories.map(c => `<option value="${c.name}">${c.emoji} ${c.name}</option>`).join('');
+
+  if (id) {
+    const p = products.find(x => x.id === id);
+    document.getElementById('product-modal-title').textContent = 'পণ্য এডিট করুন';
+    document.getElementById('edit-product-id').value = id;
+    document.getElementById('p-name').value = p.name;
+    document.getElementById('p-price').value = p.price;
+    document.getElementById('p-original').value = p.original || '';
+    document.getElementById('p-discount').value = p.discount || '';
+    document.getElementById('p-stock').value = p.stock || '';
+    document.getElementById('p-category').value = p.category;
+    document.getElementById('p-emoji').value = p.emoji || '';
+    document.getElementById('p-desc').value = p.desc || '';
+  } else {
+    document.getElementById('product-modal-title').textContent = 'নতুন পণ্য যোগ করুন';
+    document.getElementById('edit-product-id').value = '';
+    ['p-name','p-price','p-original','p-discount','p-stock','p-emoji','p-desc'].forEach(id => document.getElementById(id).value = '');
+  }
+  document.getElementById('product-modal').classList.add('open');
+}
+
+function closeProductModal() { document.getElementById('product-modal').classList.remove('open'); }
+
+function saveProduct() {
+  const name = document.getElementById('p-name').value.trim();
+  const price = parseInt(document.getElementById('p-price').value);
+  if (!name || !price) { showNotif('পণ্যের নাম ও দাম দিন!', true); return; }
+
+  const products = loadData().products;
+  const editId = parseInt(document.getElementById('edit-product-id').value);
+  const newP = {
+    id: editId || Date.now(),
+    name,
+    price,
+    original: parseInt(document.getElementById('p-original').value) || price,
+    discount: parseInt(document.getElementById('p-discount').value) || 0,
+    stock: parseInt(document.getElementById('p-stock').value) || 0,
+    category: document.getElementById('p-category').value,
+    emoji: document.getElementById('p-emoji').value || '📦',
+    desc: document.getElementById('p-desc').value,
+  };
+
+  let updated;
+  if (editId) {
+    updated = products.map(p => p.id === editId ? newP : p);
+    showNotif('পণ্য আপডেট হয়েছে ✅');
+  } else {
+    updated = [...products, newP];
+    showNotif('নতুন পণ্য যোগ হয়েছে ✅');
+  }
+  saveProducts(updated);
+  closeProductModal();
+  renderProducts();
+  renderDashboard();
+}
+
+function deleteProduct(id) {
+  if (!confirm('এই পণ্যটি মুছে ফেলবেন?')) return;
+  const products = loadData().products.filter(p => p.id !== id);
+  saveProducts(products);
+  renderProducts();
+  renderDashboard();
+  showNotif('পণ্য মুছে গেছে ✅');
+}
+
+// ===== ORDERS =====
+let currentFilter = 'all';
+function renderOrders(filter) {
+  currentFilter = filter;
+  const { orders } = loadData();
+  const list = filter === 'all' ? orders : orders.filter(o => o.status === filter);
+  const tbody = document.getElementById('orders-body');
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">🧾</div><p>কোনো অর্ডার নেই</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = [...list].reverse().map(o => `
+    <tr>
+      <td><b>${o.id}</b></td>
+      <td>${o.customer}</td>
+      <td>${o.phone}</td>
+      <td>${o.product}</td>
+      <td>৳${o.total.toLocaleString()}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td>${o.date}</td>
+      <td>
+        <div class="order-actions">
+          ${o.status !== 'delivered' ? `<button class="btn btn-success btn-sm" onclick="updateOrderStatus('${o.id}','delivered')">✅</button>` : ''}
+          ${o.status !== 'cancelled' ? `<button class="btn btn-danger btn-sm" onclick="updateOrderStatus('${o.id}','cancelled')">❌</button>` : ''}
+          <button class="btn btn-sm" style="background:#eee" onclick="deleteOrder('${o.id}')">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterOrders(f) { renderOrders(f); }
+
+function updateOrderStatus(id, status) {
+  const orders = loadData().orders.map(o => o.id === id ? { ...o, status } : o);
+  saveOrders(orders);
+  renderOrders(currentFilter);
+  renderDashboard();
+  showNotif('অর্ডার স্ট্যাটাস আপডেট হয়েছে ✅');
+}
+
+function deleteOrder(id) {
+  if (!confirm('এই অর্ডারটি মুছবেন?')) return;
+  const orders = loadData().orders.filter(o => o.id !== id);
+  saveOrders(orders);
+  renderOrders(currentFilter);
+  renderDashboard();
+  showNotif('অর্ডার মুছে গেছে ✅');
+}
+
+// ===== CATEGORIES =====
+function renderCategories() {
+  const { categories, products } = loadData();
+  const tbody = document.getElementById('categories-body');
+  tbody.innerHTML = categories.map(c => `
+    <tr>
+      <td style="font-size:22px">${c.emoji}</td>
+      <td><b>${c.name}</b></td>
+      <td><span class="badge badge-blue">${products.filter(p => p.category === c.name).length} টি</span></td>
+      <td>
+        <button class="btn btn-warning btn-sm" onclick="openCatModal(${c.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteCat(${c.id})">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openCatModal(id) {
+  const { categories } = loadData();
+  if (id) {
+    const c = categories.find(x => x.id === id);
+    document.getElementById('edit-cat-id').value = id;
+    document.getElementById('cat-name').value = c.name;
+    document.getElementById('cat-emoji').value = c.emoji;
+  } else {
+    document.getElementById('edit-cat-id').value = '';
+    document.getElementById('cat-name').value = '';
+    document.getElementById('cat-emoji').value = '';
+  }
+  document.getElementById('cat-modal').classList.add('open');
+}
+
+function closeCatModal() { document.getElementById('cat-modal').classList.remove('open'); }
+
+function saveCat() {
+  const name = document.getElementById('cat-name').value.trim();
+  if (!name) { showNotif('ক্যাটাগরির নাম দিন!', true); return; }
+  const emoji = document.getElementById('cat-emoji').value || '🏷️';
+  const categories = loadData().categories;
+  const editId = parseInt(document.getElementById('edit-cat-id').value);
+  const newC = { id: editId || Date.now(), name, emoji };
+  let updated;
+  if (editId) {
+    updated = categories.map(c => c.id === editId ? newC : c);
+    showNotif('ক্যাটাগরি আপডেট হয়েছে ✅');
+  } else {
+    updated = [...categories, newC];
+    showNotif('নতুন ক্যাটাগরি যোগ হয়েছে ✅');
+  }
+  saveCategories(updated);
+  closeCatModal();
+  renderCategories();
+}
+
+function deleteCat(id) {
+  if (!confirm('এই ক্যাটাগরি মুছবেন?')) return;
+  const categories = loadData().categories.filter(c => c.id !== id);
+  saveCategories(categories);
+  renderCategories();
+  showNotif('ক্যাটাগরি মুছে গেছে ✅');
+}
+
+// ===== SETTINGS =====
+function saveSettings() {
+  const u = document.getElementById('new-username').value.trim();
+  const p = document.getElementById('new-password').value;
+  if (!u || !p) { showNotif('Username ও Password দিন!', true); return; }
+  saveCreds({ user: u, pass: p });
+  showNotif('সেটিংস সেভ হয়েছে ✅');
+}
+
+function resetData() {
+  if (!confirm('সব ডেটা রিসেট হবে, নিশ্চিত?')) return;
+  localStorage.removeItem('nb_products');
+  localStorage.removeItem('nb_categories');
+  localStorage.removeItem('nb_orders');
+  refreshAll();
+  showNotif('ডেটা রিসেট হয়েছে ✅');
+}
+
+// ===== HELPERS =====
+function statusBadge(s) {
+  const map = {
+    pending: '<span class="badge badge-orange">⏳ পেন্ডিং</span>',
+    delivered: '<span class="badge badge-green">✅ ডেলিভার্ড</span>',
+    cancelled: '<span class="badge badge-red">❌ বাতিল</span>',
+    processing: '<span class="badge badge-blue">🔄 প্রসেসিং</span>',
+  };
+  return map[s] || s;
+}
+
+let notifTimer;
+function showNotif(msg, isError) {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.className = 'notif' + (isError ? ' error' : '');
+  el.style.display = 'block';
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => el.style.display = 'none', 2800);
+}
+
+// Close modal on outside click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
