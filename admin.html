@@ -295,7 +295,7 @@
           <table>
             <thead><tr>
               <th>পণ্য</th><th>ক্যাটাগরি</th><th>দাম</th>
-              <th>ছাড়</th><th>স্টক</th><th>অ্যাকশন</th>
+              <th>ছাড়</th><th>স্টক (+/−)</th><th>অ্যাকশন</th>
             </tr></thead>
             <tbody id="products-body"></tbody>
           </table>
@@ -555,13 +555,29 @@ function renderProducts() {
       <td>${p.category}</td>
       <td>৳${p.price.toLocaleString()}</td>
       <td>${p.discount ? `<span class="badge badge-red">${p.discount}% ছাড়</span>` : '—'}</td>
-      <td>${p.stock > 0 ? `<span class="badge badge-green">${p.stock} টি</span>` : '<span class="badge badge-red">স্টক শেষ</span>'}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button onclick="updateStock(${p.id},-1)" style="width:26px;height:26px;border:1.5px solid #e74c3c;background:white;color:#e74c3c;border-radius:4px;cursor:pointer;font-size:16px;font-weight:bold;">−</button>
+          <span style="font-weight:bold;min-width:28px;text-align:center;color:${p.stock > 0 ? '#27ae60' : '#e74c3c'}">${p.stock}</span>
+          <button onclick="updateStock(${p.id},1)" style="width:26px;height:26px;border:1.5px solid #27ae60;background:white;color:#27ae60;border-radius:4px;cursor:pointer;font-size:16px;font-weight:bold;">+</button>
+        </div>
+      </td>
       <td>
         <button class="btn btn-warning btn-sm" onclick="openProductModal(${p.id})">✏️ এডিট</button>
         <button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteProduct(${p.id})">🗑️</button>
       </td>
     </tr>
   `).join('');
+}
+
+function updateStock(id, val) {
+  const products = loadData().products.map(p => {
+    if (p.id === id) return { ...p, stock: Math.max(0, (p.stock || 0) + val) };
+    return p;
+  });
+  saveProducts(products);
+  renderProducts();
+  showNotif('স্টক আপডেট হয়েছে ✅');
 }
 
 function openProductModal(id) {
