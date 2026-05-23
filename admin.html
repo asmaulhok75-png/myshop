@@ -400,6 +400,11 @@
       <input type="text" id="p-emoji" placeholder="যেমন: 👕" maxlength="4" />
     </div>
     <div class="form-group">
+      <label>পণ্যের ছবির URL</label>
+      <input type="text" id="p-img" placeholder="https://i.ibb.co/xxx/photo.jpg" />
+      <small style="color:#888;font-size:11px;">imgbb.com এ upload করে Direct link paste করুন</small>
+    </div>
+    <div class="form-group">
       <label>বিবরণ</label>
       <textarea id="p-desc" placeholder="পণ্যের বিবরণ লিখুন..."></textarea>
     </div>
@@ -551,7 +556,7 @@ function renderProducts() {
   }
   tbody.innerHTML = filtered.map(p => `
     <tr>
-      <td><span style="font-size:20px">${p.emoji||'📦'}</span> <b>${p.name}</b></td>
+      <td><span style="font-size:20px">${p.img ? `<img src="${p.img}" style="width:36px;height:36px;object-fit:cover;border-radius:6px;vertical-align:middle;" onerror="this.style.display='none'">` : p.emoji||'📦'}</span> <b>${p.name}</b></td>
       <td>${p.category}</td>
       <td>৳${p.price.toLocaleString()}</td>
       <td>${p.discount ? `<span class="badge badge-red">${p.discount}% ছাড়</span>` : '—'}</td>
@@ -568,16 +573,6 @@ function renderProducts() {
       </td>
     </tr>
   `).join('');
-}
-
-function updateStock(id, val) {
-  const products = loadData().products.map(p => {
-    if (p.id === id) return { ...p, stock: Math.max(0, (p.stock || 0) + val) };
-    return p;
-  });
-  saveProducts(products);
-  renderProducts();
-  showNotif('স্টক আপডেট হয়েছে ✅');
 }
 
 function openProductModal(id) {
@@ -597,11 +592,12 @@ function openProductModal(id) {
     document.getElementById('p-stock').value = p.stock || '';
     document.getElementById('p-category').value = p.category;
     document.getElementById('p-emoji').value = p.emoji || '';
+    document.getElementById('p-img').value = p.img || '';
     document.getElementById('p-desc').value = p.desc || '';
   } else {
     document.getElementById('product-modal-title').textContent = 'নতুন পণ্য যোগ করুন';
     document.getElementById('edit-product-id').value = '';
-    ['p-name','p-price','p-original','p-discount','p-stock','p-emoji','p-desc'].forEach(id => document.getElementById(id).value = '');
+    ['p-name','p-price','p-original','p-discount','p-stock','p-emoji','p-img','p-desc'].forEach(id => document.getElementById(id).value = '');
   }
   document.getElementById('product-modal').classList.add('open');
 }
@@ -624,6 +620,7 @@ function saveProduct() {
     stock: parseInt(document.getElementById('p-stock').value) || 0,
     category: document.getElementById('p-category').value,
     emoji: document.getElementById('p-emoji').value || '📦',
+    img: document.getElementById('p-img').value || '',
     desc: document.getElementById('p-desc').value,
   };
 
@@ -648,6 +645,16 @@ function deleteProduct(id) {
   renderProducts();
   renderDashboard();
   showNotif('পণ্য মুছে গেছে ✅');
+}
+
+function updateStock(id, val) {
+  const products = loadData().products.map(p => {
+    if (p.id === id) return { ...p, stock: Math.max(0, (p.stock || 0) + val) };
+    return p;
+  });
+  saveProducts(products);
+  renderProducts();
+  showNotif('স্টক আপডেট হয়েছে ✅');
 }
 
 // ===== ORDERS =====
