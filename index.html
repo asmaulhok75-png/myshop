@@ -11,43 +11,37 @@
         /* NAVBAR */
         .navbar {
             background-color: #1a9e3f;
-            padding: 0 20px;
+            padding: 0 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky; top: 0; z-index: 100;
-            height: 60px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky; top: 0; z-index: 300;
+            height: 58px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            gap: 10px;
         }
         .logo {
-            display: flex; align-items: center; gap: 8px;
-            cursor: pointer; flex-shrink: 0;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 7px;
+            cursor: pointer; flex-shrink: 0; text-decoration: none;
         }
-        .logo img {
-            height: 38px; width: auto;
-            filter: brightness(0) invert(1);
-            object-fit: contain;
-        }
-        .logo-text {
-            color: white; font-size: 20px; font-weight: 800;
-            letter-spacing: 1px;
-        }
-        .search-box {
+        .logo img { height: 36px; width: auto; filter: brightness(0) invert(1); object-fit: contain; }
+        .logo-text { color: white; font-size: 21px; font-weight: 900; letter-spacing: 1px; }
+
+        /* NAVBAR SEARCH */
+        .nav-search {
             display: flex; background: white; border-radius: 25px;
-            overflow: hidden; flex: 1; min-width: 0;
-            margin: 0 14px;
+            overflow: hidden; flex: 1; min-width: 0; max-width: 500px;
         }
-        .search-box input { border: none; padding: 8px 16px; font-size: 14px; width: 100%; outline: none; }
-        .search-box button { background: #f7a800; border: none; padding: 8px 16px; cursor: pointer; font-size: 15px; flex-shrink: 0; }
-        .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-        .nav-right span { color: white; font-size: 13px; }
+        .nav-search input { border: none; padding: 8px 14px; font-size: 14px; width: 100%; outline: none; }
+        .nav-search button { background: #f7a800; border: none; padding: 8px 14px; cursor: pointer; font-size: 14px; flex-shrink: 0; }
+
+        .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .nav-right span { color: white; font-size: 12px; white-space: nowrap; }
         .cart-nav {
             background: #f7a800; color: white; border: none;
-            padding: 7px 14px; border-radius: 20px; cursor: pointer;
+            padding: 7px 13px; border-radius: 20px; cursor: pointer;
             font-size: 13px; font-weight: bold; white-space: nowrap;
             display: flex; align-items: center; gap: 5px;
-            position: relative;
         }
         .cart-nav:hover { background: #e09600; }
         .cart-badge {
@@ -56,18 +50,16 @@
             align-items: center; justify-content: center;
             font-size: 11px; font-weight: 900;
         }
-
-        /* MOBILE NAV */
-        .hamburger {
-            display: none; background: none; border: none;
-            color: white; font-size: 24px; cursor: pointer;
-            padding: 4px; flex-shrink: 0;
+        .menu-icon-btn {
+            background: none; border: none; color: white;
+            font-size: 22px; cursor: pointer; padding: 4px;
+            flex-shrink: 0; line-height: 1;
         }
         .mobile-cart-btn {
             display: none;
             background: #f7a800; border: none; color: white;
-            border-radius: 50%; width: 40px; height: 40px;
-            font-size: 18px; cursor: pointer; position: relative;
+            border-radius: 50%; width: 38px; height: 38px;
+            font-size: 17px; cursor: pointer; position: relative;
             align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mobile-cart-badge {
@@ -77,49 +69,139 @@
             font-size: 10px; font-weight: 900;
             display: flex; align-items: center; justify-content: center;
         }
-        .mobile-menu {
-            display: none; position: fixed; top: 60px; left: 0; right: 0;
-            background: #1a9e3f; z-index: 99; padding: 16px 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            flex-direction: column; gap: 10px;
+
+        /* LEFT DRAWER */
+        .drawer-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); z-index: 400;
         }
-        .mobile-menu.open { display: flex; }
-        .mobile-menu .search-box { margin: 0; width: 100%; }
-        .mobile-menu-links { display: flex; gap: 10px; flex-wrap: wrap; }
-        .mobile-menu-links a {
-            color: white; text-decoration: none; font-size: 14px;
-            padding: 6px 12px; background: rgba(255,255,255,0.15);
-            border-radius: 20px;
+        .drawer-overlay.open { display: block; }
+        .drawer {
+            position: fixed; left: -300px; top: 0; width: 280px;
+            height: 100vh; background: white; z-index: 401;
+            transition: left 0.3s ease; display: flex; flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
         }
-        .mobile-menu-links a:hover { background: rgba(255,255,255,0.3); }
+        .drawer.open { left: 0; }
+        .drawer-header {
+            background: #1a9e3f; color: white;
+            padding: 16px 18px; display: flex;
+            justify-content: space-between; align-items: center;
+            flex-shrink: 0;
+        }
+        .drawer-header h3 { font-size: 16px; font-weight: 700; }
+        .drawer-close {
+            background: none; border: none; color: white;
+            font-size: 22px; cursor: pointer;
+        }
+        .drawer-search {
+            padding: 12px 14px; border-bottom: 1px solid #eee; flex-shrink: 0;
+        }
+        .drawer-search-inner {
+            display: flex; background: #f4f4f4; border-radius: 22px; overflow: hidden;
+        }
+        .drawer-search-inner input {
+            border: none; background: transparent; padding: 8px 14px;
+            font-size: 13px; width: 100%; outline: none;
+        }
+        .drawer-search-inner button {
+            background: #1a9e3f; border: none; color: white;
+            padding: 8px 12px; cursor: pointer; font-size: 13px;
+        }
+        .drawer-body { flex: 1; overflow-y: auto; padding: 8px 0; }
+        .drawer-section-label {
+            font-size: 11px; color: #aaa; font-weight: 700;
+            padding: 10px 18px 4px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .drawer-cat-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 18px; cursor: pointer; font-size: 14px;
+            color: #333; transition: background 0.15s; border-left: 3px solid transparent;
+        }
+        .drawer-cat-item:hover, .drawer-cat-item.active {
+            background: #e8f5e9; border-left-color: #1a9e3f; color: #1a9e3f; font-weight: 600;
+        }
+        .drawer-cat-icon { font-size: 20px; width: 26px; text-align: center; }
+        .drawer-divider { height: 1px; background: #eee; margin: 8px 0; }
+        .drawer-brand-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 18px; cursor: pointer; font-size: 13px;
+            color: #555; transition: background 0.15s;
+        }
+        .drawer-brand-item:hover { background: #f0f0f0; }
+        .drawer-brand-badge {
+            font-size: 10px; background: #f7a800; color: white;
+            padding: 2px 7px; border-radius: 10px; margin-left: auto;
+        }
 
         /* BANNER */
-        .banner { background: linear-gradient(135deg, #1a9e3f, #25c95a); color: white; text-align: center; padding: 36px 20px; }
-        .banner h1 { font-size: 24px; margin-bottom: 8px; }
-        .banner p { font-size: 14px; opacity: 0.9; }
-        .banner-btn { margin-top: 16px; background: #f7a800; color: white; border: none; padding: 10px 26px; border-radius: 25px; font-size: 15px; cursor: pointer; }
+        .banner { background: linear-gradient(135deg, #1a9e3f, #25c95a); color: white; text-align: center; padding: 32px 20px; position: relative; overflow: hidden; }
+        .banner::before { content:''; position:absolute; top:-40px; right:-40px; width:150px; height:150px; background:rgba(255,255,255,0.07); border-radius:50%; }
+        .banner h1 { font-size: 24px; margin-bottom: 8px; position: relative; }
+        .banner p { font-size: 14px; opacity: 0.9; position: relative; }
+        .banner-btn { margin-top: 16px; background: #f7a800; color: white; border: none; padding: 10px 26px; border-radius: 25px; font-size: 15px; cursor: pointer; font-weight: bold; position: relative; }
+        .banner-btn:hover { background: #e09600; }
 
-        /* CATEGORY */
-        .category-bar { background: white; display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto; border-bottom: 2px solid #eee; }
-        .cat-btn { background: #f0f0f0; border: none; padding: 7px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; white-space: nowrap; transition: 0.2s; }
+        /* FLASH SALE */
+        .flash-sale-bar {
+            background: #ff4444; color: white; display: flex;
+            align-items: center; justify-content: center; gap: 14px;
+            padding: 8px 16px; font-size: 13px; font-weight: bold;
+            flex-wrap: wrap;
+        }
+        .flash-timer { display: flex; gap: 5px; align-items: center; }
+        .flash-timer span {
+            background: rgba(255,255,255,0.25); border-radius: 5px;
+            padding: 2px 7px; font-size: 14px; font-weight: 900;
+            min-width: 28px; text-align: center;
+        }
+        .flash-timer .sep { font-size: 14px; }
+
+        /* CATEGORY BAR */
+        .category-bar { background: white; display: flex; gap: 8px; padding: 10px 14px; overflow-x: auto; border-bottom: 2px solid #eee; scrollbar-width: none; }
+        .category-bar::-webkit-scrollbar { display: none; }
+        .cat-btn { background: #f0f0f0; border: none; padding: 7px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; white-space: nowrap; transition: 0.2s; }
         .cat-btn:hover, .cat-btn.active { background: #1a9e3f; color: white; }
 
-        .section-title { font-size: 18px; font-weight: bold; padding: 16px 16px 10px; color: #333; }
+        .section-title { font-size: 18px; font-weight: bold; padding: 16px 16px 10px; color: #333; display: flex; align-items: center; gap: 8px; }
+        .see-all-btn { margin-left: auto; font-size: 12px; color: #1a9e3f; background: none; border: 1px solid #1a9e3f; padding: 4px 12px; border-radius: 15px; cursor: pointer; font-weight: 600; white-space: nowrap; }
 
         /* PRODUCT GRID */
-        .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; padding: 0 16px 24px; }
+        .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; padding: 0 14px 24px; }
         .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: transform 0.2s; cursor: pointer; }
-        .card:hover { transform: translateY(-3px); }
-        .card-img { width: 100%; height: 130px; object-fit: cover; background: #f9f9f9; display: flex; align-items: center; justify-content: center; font-size: 55px; }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .card-img { width: 100%; height: 130px; object-fit: cover; background: #f9f9f9; display: flex; align-items: center; justify-content: center; font-size: 55px; position: relative; }
         .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-badge { position: absolute; top: 7px; left: 7px; background: #ff4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .card-body { padding: 10px; }
-        .card-body h3 { font-size: 13px; color: #333; margin-bottom: 5px; }
+        .card-body h3 { font-size: 13px; color: #333; margin-bottom: 5px; line-height: 1.4; }
         .price { color: #1a9e3f; font-size: 15px; font-weight: bold; }
         .old-price { color: #aaa; font-size: 11px; text-decoration: line-through; margin-left: 4px; }
-        .discount { background: #ff4444; color: white; font-size: 10px; padding: 2px 5px; border-radius: 4px; margin-bottom: 5px; display: inline-block; }
-        .add-btn { width: 100%; background: #1a9e3f; color: white; border: none; padding: 7px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-top: 7px; }
+        .add-btn { width: 100%; background: #1a9e3f; color: white; border: none; padding: 7px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-top: 7px; font-weight: 600; }
         .add-btn:hover { background: #157a32; }
         .no-result { padding: 40px 16px; text-align: center; color: #aaa; font-size: 15px; grid-column: 1/-1; }
+
+        /* OUR BRANDS */
+        .brands-section { padding: 0 14px 24px; }
+        .brands-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+        .brand-card {
+            background: white; border-radius: 14px; padding: 20px 14px;
+            text-align: center; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07); transition: 0.2s;
+            border: 2px solid transparent;
+        }
+        .brand-card:hover { transform: translateY(-3px); border-color: #1a9e3f; box-shadow: 0 6px 18px rgba(26,158,63,0.15); }
+        .brand-card .brand-icon { font-size: 36px; margin-bottom: 8px; }
+        .brand-card .brand-name { font-size: 13px; font-weight: 700; color: #222; }
+        .brand-card .brand-tagline { font-size: 11px; color: #888; margin-top: 3px; }
+        .brand-card .brand-badge { display: inline-block; margin-top: 7px; font-size: 10px; background: #e8f5e9; color: #1a9e3f; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+        /* FEATURES ROW */
+        .features-row { display: flex; gap: 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; background: white; margin-bottom: 4px; }
+        .feature-item { flex: 1; text-align: center; padding: 14px 8px; font-size: 11px; color: #555; border-right: 1px solid #eee; }
+        .feature-item:last-child { border-right: none; }
+        .feature-item .fi { font-size: 22px; margin-bottom: 4px; }
+        .feature-item b { display: block; font-size: 12px; color: #222; }
 
         /* CART SIDEBAR */
         .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; }
@@ -145,6 +227,18 @@
         .cart-footer { padding: 14px; border-top: 2px solid #eee; }
         .cart-total-row { display: flex; justify-content: space-between; font-size: 17px; font-weight: bold; margin-bottom: 12px; }
         .cart-checkout { width: 100%; background: #f7a800; color: white; border: none; padding: 13px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; }
+
+        /* WHATSAPP FLOAT */
+        .wa-float {
+            position: fixed; bottom: 24px; right: 18px; z-index: 150;
+            background: #25d366; color: white; border: none;
+            border-radius: 50%; width: 54px; height: 54px;
+            font-size: 26px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(37,211,102,0.5);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100%{box-shadow:0 4px 14px rgba(37,211,102,0.5)} 50%{box-shadow:0 4px 22px rgba(37,211,102,0.8)} }
 
         /* DETAILS PAGE */
         .back-btn { background: none; border: none; color: #1a9e3f; font-size: 15px; cursor: pointer; padding: 16px; display: flex; align-items: center; gap: 6px; font-weight: bold; }
@@ -175,74 +269,140 @@
         .order-qty-box span { font-size: 15px; font-weight: bold; min-width: 22px; text-align: center; }
 
         /* TOAST */
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a9e3f; color: white; padding: 9px 22px; border-radius: 24px; font-size: 13px; font-weight: bold; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; white-space: nowrap; }
+        .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #1a9e3f; color: white; padding: 9px 22px; border-radius: 24px; font-size: 13px; font-weight: bold; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; white-space: nowrap; }
         .toast.show { opacity: 1; }
 
-        footer { background: #222; color: #aaa; text-align: center; padding: 18px; font-size: 13px; }
-
         /* FOOTER */
-        .site-footer {
-            background: #0d4f6e; color: #cde; padding: 40px 30px 24px;
-        }
-        .footer-grid {
-            display: grid; grid-template-columns: 1fr 1fr 1fr;
-            gap: 32px; max-width: 1100px; margin: 0 auto 28px;
-        }
-        .footer-col h4 {
-            color: white; font-size: 16px; font-weight: 700;
-            margin-bottom: 12px; padding-bottom: 10px;
-            border-bottom: 2px solid #e53935;
-        }
-        .footer-col p, .footer-col a {
-            font-size: 13px; color: #b0cfe0; line-height: 2;
-            display: block; text-decoration: none;
-        }
+        .site-footer { background: #0d4f6e; color: #cde; padding: 40px 30px 24px; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; max-width: 1100px; margin: 0 auto 28px; }
+        .footer-col h4 { color: white; font-size: 16px; font-weight: 700; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #e53935; }
+        .footer-col p, .footer-col a { font-size: 13px; color: #b0cfe0; line-height: 2; display: block; text-decoration: none; }
         .footer-col a:hover { color: white; }
-        .footer-col .contact-item {
-            display: flex; align-items: flex-start; gap: 8px;
-            margin-bottom: 6px; font-size: 13px; color: #b0cfe0;
-        }
+        .footer-col .contact-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; font-size: 13px; color: #b0cfe0; }
         .footer-socials { display: flex; gap: 8px; margin-top: 14px; }
-        .footer-socials a {
-            width: 34px; height: 34px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; color: white; text-decoration: none;
-        }
+        .footer-socials a { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; text-decoration: none; }
         .footer-socials .fb { background: #1877f2; }
         .footer-socials .tw { background: #1da1f2; }
         .footer-socials .yt { background: #ff0000; }
         .footer-payment { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
         .footer-payment img { height: 28px; border-radius: 4px; }
-        .footer-bottom {
-            background: #1a1a2e; text-align: center;
-            padding: 14px; font-size: 13px; color: #888;
-        }
+        .footer-bottom { background: #1a1a2e; text-align: center; padding: 14px; font-size: 13px; color: #888; }
         .footer-bottom a { color: #f7a800; text-decoration: none; }
 
-        /* MOBILE */
-        @media (max-width: 600px) {
-            .search-box { display: none; }
+        /* BOOK SHOP PAGE */
+        .bookshop-hero {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white; padding: 28px 20px; text-align: center;
+        }
+        .bookshop-hero h2 { font-size: 22px; margin-bottom: 6px; }
+        .bookshop-hero p { font-size: 13px; opacity: 0.85; }
+        .book-category-bar {
+            background: white; display: flex; gap: 8px; padding: 10px 14px;
+            overflow-x: auto; border-bottom: 2px solid #eee; scrollbar-width: none;
+        }
+        .book-category-bar::-webkit-scrollbar { display: none; }
+        .book-cat-btn { background: #f0f0f0; border: none; padding: 7px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; white-space: nowrap; transition: 0.2s; }
+        .book-cat-btn.active, .book-cat-btn:hover { background: #1a237e; color: white; }
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 14px; padding: 14px; }
+        .book-card {
+            background: white; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.09); cursor: pointer; transition: 0.2s;
+        }
+        .book-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.13); }
+        .book-cover {
+            width: 100%; height: 160px; display: flex; align-items: center;
+            justify-content: center; font-size: 60px; position: relative;
+        }
+        .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .book-info { padding: 10px; }
+        .book-title { font-size: 13px; font-weight: 700; color: #1a237e; margin-bottom: 3px; line-height: 1.4; }
+        .book-author { font-size: 11px; color: #888; margin-bottom: 5px; }
+        .book-price { color: #1a9e3f; font-size: 14px; font-weight: bold; }
+        .book-old-price { color: #aaa; font-size: 11px; text-decoration: line-through; margin-left: 4px; }
+        .book-add-btn { width: 100%; background: #1a237e; color: white; border: none; padding: 7px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-top: 7px; font-weight: 600; }
+        .book-add-btn:hover { background: #0d1b6e; }
+        .book-genre-badge {
+            position: absolute; top: 7px; right: 7px; background: rgba(26,35,126,0.85);
+            color: white; font-size: 9px; padding: 2px 7px; border-radius: 10px;
+        }
+        @media (max-width: 620px) {
+            .nav-search { display: none; }
             .nav-right { display: none; }
-            .hamburger { display: block; }
-            .mobile-cart-btn { display: flex; }
+            .mobile-cart-btn { display: flex !important; }
             .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+            .features-row { flex-wrap: wrap; }
+            .feature-item { min-width: 50%; border-bottom: 1px solid #eee; }
         }
         @media (max-width: 480px) {
             .details-img { max-width: 100%; height: 220px; }
             .buy-btn, .cart-btn-big { width: 100%; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .brands-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
+<!-- LEFT DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- LEFT DRAWER -->
+<div class="drawer" id="left-drawer">
+    <div class="drawer-header">
+        <h3>☰ মেনু</h3>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-search">
+        <div class="drawer-search-inner">
+            <input type="text" id="drawer-search-input" placeholder="🔍 পণ্য খুঁজুন..." oninput="drawerSearch()">
+            <button onclick="drawerSearch()">→</button>
+        </div>
+    </div>
+    <div class="drawer-body">
+        <div class="drawer-section-label">ক্যাটাগরি</div>
+        <div class="drawer-cat-item active" id="dcat-সব" onclick="drawerFilterCat('সব')">
+            <span class="drawer-cat-icon">🏠</span> সব পণ্য
+        </div>
+        <div class="drawer-cat-item" id="dcat-কাপড়" onclick="drawerFilterCat('কাপড়')">
+            <span class="drawer-cat-icon">👕</span> কাপড়
+        </div>
+        <div class="drawer-cat-item" id="dcat-ইলেকট্রনিক্স" onclick="drawerFilterCat('ইলেকট্রনিক্স')">
+            <span class="drawer-cat-icon">📱</span> ইলেকট্রনিক্স
+        </div>
+        <div class="drawer-cat-item" id="dcat-অন্যান্য" onclick="drawerFilterCat('অন্যান্য')">
+            <span class="drawer-cat-icon">📦</span> অন্যান্য
+        </div>
+        <div class="drawer-divider"></div>
+        <div class="drawer-section-label">আমাদের ব্র্যান্ড</div>
+        <div class="drawer-brand-item" onclick="showBookShop(); closeDrawer()">
+            <span class="drawer-cat-icon">📚</span> Nobobi Book Shop
+            <span class="drawer-brand-badge" style="background:#e8eaf6;color:#1a237e">✅</span>
+        </div>
+        <div class="drawer-brand-item" onclick="scrollToBrands(); closeDrawer()">
+            <span class="drawer-cat-icon">🛒</span> Nobobi Store
+        </div>
+        <div class="drawer-brand-item" onclick="scrollToBrands(); closeDrawer()">
+            <span class="drawer-cat-icon">💊</span> Nobobi Health
+            <span class="drawer-brand-badge">শীঘ্রই</span>
+        </div>
+        <div class="drawer-divider"></div>
+        <div class="drawer-section-label">পেজ</div>
+        <div class="drawer-cat-item" onclick="closeDrawer()">
+            <span class="drawer-cat-icon">📞</span> যোগাযোগ
+        </div>
+        <div class="drawer-cat-item" onclick="closeDrawer()">
+            <span class="drawer-cat-icon">ℹ️</span> আমাদের সম্পর্কে
+        </div>
+    </div>
+</div>
+
 <!-- NAVBAR -->
 <div class="navbar">
+    <button class="menu-icon-btn" onclick="openDrawer()">☰</button>
     <div class="logo" onclick="showHome()">
         <img src="Background_copy_2.png" alt="nobobi logo" onerror="this.style.display='none'">
         <span class="logo-text">nobobi</span>
     </div>
-    <div class="search-box">
+    <div class="nav-search">
         <input type="text" id="search-input" placeholder="পণ্য খুঁজুন..." oninput="searchProducts()">
         <button onclick="searchProducts()">🔍</button>
     </div>
@@ -252,69 +412,105 @@
             🛒 Cart <span class="cart-badge" id="cart-count">0</span>
         </button>
     </div>
-    <!-- Mobile only -->
-    <button class="mobile-cart-btn" onclick="openCart()" id="mobile-cart-btn">
+    <button class="mobile-cart-btn" onclick="openCart()" style="display:none" id="mobile-cart-btn">
         🛒
         <span class="mobile-cart-badge" id="cart-count-mobile">0</span>
     </button>
-    <button class="hamburger" onclick="toggleMobileMenu()" id="hamburger-btn">☰</button>
-</div>
-
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu">
-    <div class="search-box">
-        <input type="text" id="search-input-mobile" placeholder="পণ্য খুঁজুন..." oninput="searchProductsMobile()">
-        <button onclick="searchProductsMobile()">🔍</button>
-    </div>
-    <div class="mobile-menu-links">
-        <a href="#">🏠 হোম</a>
-        <a href="#">🛍️ শপ</a>
-        <a href="#">📞 যোগাযোগ</a>
-    </div>
 </div>
 
 <!-- HOME PAGE -->
 <div id="home-page">
+    <!-- FLASH SALE BAR -->
+    <div class="flash-sale-bar">
+        <span>⚡ ফ্ল্যাশ সেল চলছে!</span>
+        <div class="flash-timer">
+            <span id="ft-h">00</span><span class="sep">:</span>
+            <span id="ft-m">00</span><span class="sep">:</span>
+            <span id="ft-s">00</span>
+        </div>
+        <span>পর্যন্ত ৩০% ছাড়</span>
+    </div>
+
+    <!-- BANNER -->
     <div class="banner">
         <h1>🎉 বিশেষ অফার চলছে!</h1>
         <p>৳৫০০+ অর্ডারে ফ্রি ডেলিভারি — আজই অর্ডার করুন</p>
-        <button class="banner-btn">এখনই কিনুন</button>
+        <button class="banner-btn" onclick="document.getElementById('products-grid').scrollIntoView({behavior:'smooth'})">এখনই কিনুন 🛒</button>
     </div>
-    <div class="category-bar">
+
+    <!-- FEATURES ROW -->
+    <div class="features-row">
+        <div class="feature-item"><div class="fi">🚚</div><b>ফ্রি ডেলিভারি</b>৳৫০০+ অর্ডারে</div>
+        <div class="feature-item"><div class="fi">↩️</div><b>৭ দিন রিটার্ন</b>সমস্যায় ফেরত</div>
+        <div class="feature-item"><div class="fi">🔒</div><b>নিরাপদ পেমেন্ট</b>bKash / Nagad</div>
+        <div class="feature-item"><div class="fi">📞</div><b>সাপোর্ট</b>সকাল ১০ — রাত ৮</div>
+    </div>
+
+    <!-- CATEGORY BAR -->
+    <div class="category-bar" id="category-bar">
         <button class="cat-btn active" onclick="filterCat(this,'সব')">🏠 সব পণ্য</button>
         <button class="cat-btn" onclick="filterCat(this,'কাপড়')">👕 কাপড়</button>
         <button class="cat-btn" onclick="filterCat(this,'ইলেকট্রনিক্স')">📱 ইলেকট্রনিক্স</button>
+        <button class="cat-btn" onclick="filterCat(this,'অন্যান্য')">📦 অন্যান্য</button>
     </div>
-    <div class="section-title" id="section-title">🔥 জনপ্রিয় পণ্য</div>
+
+    <!-- PRODUCTS -->
+    <div class="section-title" id="section-title">
+        🔥 জনপ্রিয় পণ্য
+        <button class="see-all-btn" onclick="filterCat(document.querySelector('.cat-btn'),'সব')">সব দেখুন →</button>
+    </div>
     <div class="products" id="products-grid"></div>
+
+    <!-- OUR BRANDS -->
+    <div id="brands-anchor"></div>
+    <div class="section-title">🏬 আমাদের ব্র্যান্ড</div>
+    <div class="brands-section">
+        <div class="brands-grid">
+            <div class="brand-card" onclick="showToast('Nobobi Store — আপনি এখানেই আছেন! 🛒')">
+                <div class="brand-icon">🛒</div>
+                <div class="brand-name">Nobobi Store</div>
+                <div class="brand-tagline">ফ্যাশন ও ইলেকট্রনিক্স</div>
+                <span class="brand-badge">✅ সক্রিয়</span>
+            </div>
+            <div class="brand-card" onclick="showBookShop()" style="border-color:#1a237e">
+                <div class="brand-icon">📚</div>
+                <div class="brand-name">Nobobi Book Shop</div>
+                <div class="brand-tagline">বই, স্টেশনারি ও শিক্ষা</div>
+                <span class="brand-badge" style="background:#e8eaf6;color:#1a237e">✅ সক্রিয়</span>
+            </div>
+            <div class="brand-card" onclick="showToast('Nobobi Health — শীঘ্রই আসছে! 💊')">
+                <div class="brand-icon">💊</div>
+                <div class="brand-name">Nobobi Health</div>
+                <div class="brand-tagline">স্বাস্থ্য ও সৌন্দর্য</div>
+                <span class="brand-badge" style="background:#fff3e0;color:#f57c00">🔜 শীঘ্রই</span>
+            </div>
+            <div class="brand-card" onclick="showToast('Nobobi Food — শীঘ্রই আসছে! 🍔')">
+                <div class="brand-icon">🍔</div>
+                <div class="brand-name">Nobobi Food</div>
+                <div class="brand-tagline">খাবার ও পানীয়</div>
+                <span class="brand-badge" style="background:#fff3e0;color:#f57c00">🔜 শীঘ্রই</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-grid">
-            <!-- About Us -->
             <div class="footer-col">
                 <h4>About Us</h4>
-                <div class="contact-item">
-                    <span>📍</span>
-                    <span>11/1 BanglaBazar, Dhaka-1100</span>
-                </div>
-                <div class="contact-item">
-                    <span>✉️</span>
-                    <span>info@nobobi.com</span>
-                </div>
-                <div class="contact-item">
-                    <span>📞</span>
-                    <span>01734-728569 (10:00am – 8:00 pm)</span>
-                </div>
+                <div class="contact-item"><span>📍</span><span>11/1 BanglaBazar, Dhaka-1100</span></div>
+                <div class="contact-item"><span>✉️</span><span>info@nobobi.com</span></div>
+                <div class="contact-item"><span>📞</span><span>01734-728569 (10:00am – 8:00 pm)</span></div>
                 <div class="footer-socials">
-                    <a href="#" class="fb">f</a>
-                    <a href="#" class="tw">𝕏</a>
-                    <a href="#" class="yt">▶</a>
+                    <a href="https://web.facebook.com/nobobicom" target="_blank" class="fb" title="Facebook">f</a>
+                    <a href="https://www.youtube.com/@nobobi-com" target="_blank" class="yt" title="YouTube">▶</a>
+                    <a href="https://wa.me/8801734728569" target="_blank" class="wa" title="WhatsApp" style="background:#25d366">💬</a>
                 </div>
                 <div class="footer-payment">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Bkash_logo.svg/200px-Bkash_logo.svg.png" alt="bKash" onerror="this.style.display='none'">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Nagad.svg/200px-Nagad.svg.png" alt="Nagad" onerror="this.style.display='none'">
                 </div>
             </div>
-            <!-- Important Links -->
             <div class="footer-col">
                 <h4>Important Links</h4>
                 <a href="#" onclick="showHome();return false;">Home</a>
@@ -323,7 +519,6 @@
                 <a href="#">Contact</a>
                 <a href="#">About Us</a>
             </div>
-            <!-- Policies -->
             <div class="footer-col">
                 <h4>Policies</h4>
                 <a href="#">Privacy Policy</a>
@@ -333,9 +528,7 @@
             </div>
         </div>
     </footer>
-    <div class="footer-bottom">
-        © 2025 <a href="#">Nobobi</a> — All Rights Reserved.
-    </div>
+    <div class="footer-bottom">© 2025 <a href="#">Nobobi</a> — All Rights Reserved.</div>
 </div>
 
 <!-- DETAILS PAGE -->
@@ -434,7 +627,29 @@
     </div>
 </div>
 
-<!-- CART SIDEBAR -->
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/8801734728569" target="_blank" class="wa-float" title="WhatsApp এ যোগাযোগ করুন">
+    <span>💬</span>
+</a>
+
+<!-- BOOK SHOP PAGE -->
+<div id="bookshop-page" style="display:none; background:#f4f4f4; min-height:100vh;">
+    <button class="back-btn" style="color:#1a237e" onclick="showHome()">← মূল শপে ফিরুন</button>
+    <div class="bookshop-hero">
+        <div style="font-size:32px;margin-bottom:6px">📚</div>
+        <h2>Nobobi Book Shop</h2>
+        <p>বই কিনুন, জ্ঞান অর্জন করুন — ঘরে বসেই ডেলিভারি পান</p>
+    </div>
+    <div class="book-category-bar">
+        <button class="book-cat-btn active" onclick="filterBooks(this,'সব')">📖 সব বই</button>
+        <button class="book-cat-btn" onclick="filterBooks(this,'উপন্যাস')">✍️ উপন্যাস</button>
+        <button class="book-cat-btn" onclick="filterBooks(this,'শিক্ষামূলক')">🎓 শিক্ষামূলক</button>
+        <button class="book-cat-btn" onclick="filterBooks(this,'ইসলামিক')">🕌 ইসলামিক</button>
+        <button class="book-cat-btn" onclick="filterBooks(this,'শিশু')">🧒 শিশু</button>
+        <button class="book-cat-btn" onclick="filterBooks(this,'বিজ্ঞান')">🔬 বিজ্ঞান</button>
+    </div>
+    <div class="books-grid" id="books-grid"></div>
+</div>
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="cart-sidebar" id="cart-sidebar">
     <div class="cart-header">
@@ -520,20 +735,27 @@
     function searchProducts() {
         const allProducts = getProducts();
         const q = document.getElementById('search-input').value.trim().toLowerCase();
-        let list = currentFilter === 'সব' ? allProducts : allProducts.filter(p => (p.cat||p.category) === currentFilter);
+        let list = currentFilter === 'সব' ? allProducts : allProducts.filter(p => (p.cat||p.category||'অন্যান্য') === currentFilter);
         if (q) list = list.filter(p => p.name.toLowerCase().includes(q));
-        document.getElementById('section-title').textContent = q ? `🔍 "${q}" এর ফলাফল` : '🔥 জনপ্রিয় পণ্য';
+        document.getElementById('section-title').innerHTML = q
+            ? `🔍 "${q}" এর ফলাফল <button class="see-all-btn" onclick="filterCat(document.querySelector('.cat-btn'),'সব')">সব দেখুন →</button>`
+            : '🔥 জনপ্রিয় পণ্য <button class="see-all-btn" onclick="filterCat(document.querySelector(\'.cat-btn\'),\'সব\')">সব দেখুন →</button>';
         renderProducts(list);
     }
 
     function filterCat(btn, cat) {
         const allProducts = getProducts();
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if (btn) btn.classList.add('active');
         currentFilter = cat;
+        // sync drawer
+        document.querySelectorAll('.drawer-cat-item').forEach(el => el.classList.remove('active'));
+        const dcEl = document.getElementById('dcat-' + cat);
+        if (dcEl) dcEl.classList.add('active');
         document.getElementById('search-input').value = '';
-        document.getElementById('section-title').textContent = cat === 'সব' ? '🔥 জনপ্রিয় পণ্য' : cat;
-        renderProducts(cat === 'সব' ? allProducts : allProducts.filter(p => (p.cat||p.category) === cat));
+        document.getElementById('section-title').innerHTML = (cat === 'সব' ? '🔥 জনপ্রিয় পণ্য' : '📦 ' + cat) +
+            ' <button class="see-all-btn" onclick="filterCat(document.querySelector(\'.cat-btn\'),\'সব\')">সব দেখুন →</button>';
+        renderProducts(cat === 'সব' ? allProducts : allProducts.filter(p => (p.cat||p.category||'অন্যান্য') === cat));
     }
 
     // ===== CART =====
@@ -564,19 +786,64 @@
         if (mob) mob.textContent = total;
     }
 
-    function toggleMobileMenu() {
-        const menu = document.getElementById('mobile-menu');
-        const btn = document.getElementById('hamburger-btn');
-        menu.classList.toggle('open');
-        btn.textContent = menu.classList.contains('open') ? '✕' : '☰';
+    // ===== DRAWER =====
+    function openDrawer() {
+        document.getElementById('left-drawer').classList.add('open');
+        document.getElementById('drawer-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
     }
-
-    function searchProductsMobile() {
-        const q = document.getElementById('search-input-mobile').value.trim();
+    function closeDrawer() {
+        document.getElementById('left-drawer').classList.remove('open');
+        document.getElementById('drawer-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function drawerFilterCat(cat) {
+        document.querySelectorAll('.drawer-cat-item').forEach(el => el.classList.remove('active'));
+        const el = document.getElementById('dcat-' + cat);
+        if (el) el.classList.add('active');
+        // sync category bar
+        document.querySelectorAll('.cat-btn').forEach(b => {
+            b.classList.toggle('active', b.textContent.includes(cat === 'সব' ? 'সব' : cat));
+        });
+        currentFilter = cat;
+        const allProducts = getProducts();
+        document.getElementById('section-title').innerHTML = (cat === 'সব' ? '🔥 জনপ্রিয় পণ্য' : '📦 ' + cat) +
+            ' <button class="see-all-btn" onclick="filterCat(document.querySelector(\'.cat-btn\'),\'সব\')">সব দেখুন →</button>';
+        renderProducts(cat === 'সব' ? allProducts : allProducts.filter(p => (p.cat||p.category||'অন্যান্য') === cat));
+        closeDrawer();
+        document.getElementById('products-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function drawerSearch() {
+        const q = document.getElementById('drawer-search-input').value.trim();
+        if (!q) return;
         document.getElementById('search-input').value = q;
         searchProducts();
-        if (q) toggleMobileMenu();
+        closeDrawer();
+        document.getElementById('products-grid').scrollIntoView({ behavior: 'smooth' });
     }
+    function scrollToBrands() {
+        document.getElementById('brands-anchor').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ===== FLASH SALE TIMER (6h countdown) =====
+    (function() {
+        const key = 'nob_flash_end';
+        let end = parseInt(localStorage.getItem(key) || '0');
+        if (!end || end < Date.now()) {
+            end = Date.now() + 6 * 3600 * 1000;
+            localStorage.setItem(key, end);
+        }
+        function tick() {
+            const diff = Math.max(0, end - Date.now());
+            const h = String(Math.floor(diff/3600000)).padStart(2,'0');
+            const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+            const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+            const hEl = document.getElementById('ft-h');
+            if (hEl) { hEl.textContent = h; document.getElementById('ft-m').textContent = m; document.getElementById('ft-s').textContent = s; }
+        }
+        tick();
+        setInterval(tick, 1000);
+    })();
 
     function openCart() {
         renderCart();
@@ -671,7 +938,7 @@
     }
 
     function hideAll() {
-        ['home-page','details-page','order-page','success-page'].forEach(id => {
+        ['home-page','details-page','order-page','success-page','bookshop-page'].forEach(id => {
             document.getElementById(id).style.display = 'none';
         });
     }
@@ -762,8 +1029,132 @@
         toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // ===== INIT =====
+    // ===== BOOK SHOP =====
+    const demoBooks = [
+        { id:'b1', title:'পথের পাঁচালী', author:'বিভূতিভূষণ বন্দ্যোপাধ্যায়', price:280, original:350, genre:'উপন্যাস', emoji:'📗', color:'#e8f5e9', cover:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&q=80' },
+        { id:'b2', title:'হুমায়ূন আহমেদ সমগ্র', author:'হুমায়ূন আহমেদ', price:650, original:800, genre:'উপন্যাস', emoji:'📘', color:'#e3f2fd', cover:'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200&q=80' },
+        { id:'b3', title:'দেয়াল', author:'হুমায়ূন আহমেদ', price:220, original:260, genre:'উপন্যাস', emoji:'📙', color:'#fff3e0', cover:'https://images.unsplash.com/photo-1495640452828-3df6795cf69b?w=200&q=80' },
+        { id:'b4', title:'রিয়াযুস সালেহীন', author:'ইমাম নববী (রহ.)', price:380, original:450, genre:'ইসলামিক', emoji:'📕', color:'#fce4ec', cover:'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=200&q=80' },
+        { id:'b5', title:'কুরআন শরীফ (বাংলা অর্থসহ)', author:'অনুবাদ: ড. মুজিবুর রহমান', price:550, original:650, genre:'ইসলামিক', emoji:'📖', color:'#f3e5f5', cover:'https://images.unsplash.com/photo-1585036156171-384164a8c675?w=200&q=80' },
+        { id:'b6', title:'গণিত ক্লাস ৯-১০', author:'NCTB', price:180, original:200, genre:'শিক্ষামূলক', emoji:'📐', color:'#e0f7fa', cover:'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=200&q=80' },
+        { id:'b7', title:'বিজ্ঞান ক্লাস ৮', author:'NCTB', price:160, original:180, genre:'শিক্ষামূলক', emoji:'🔬', color:'#e8f5e9', cover:'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200&q=80' },
+        { id:'b8', title:'ছোটদের মজার গল্প', author:'রকিব হাসান', price:150, original:200, genre:'শিশু', emoji:'🧒', color:'#fff8e1', cover:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80' },
+        { id:'b9', title:'ছোটদের বিজ্ঞান', author:'মুহম্মদ জাফর ইকবাল', price:200, original:240, genre:'শিশু', emoji:'🚀', color:'#e3f2fd', cover:'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=200&q=80' },
+        { id:'b10', title:'বিশ্ব বিজ্ঞান', author:'মুহম্মদ জাফর ইকবাল', price:320, original:380, genre:'বিজ্ঞান', emoji:'🌍', color:'#e8eaf6', cover:'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200&q=80' },
+        { id:'b11', title:'আলোর গতি', author:'জাফর ইকবাল', price:260, original:300, genre:'বিজ্ঞান', emoji:'⚡', color:'#fff9c4', cover:'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=200&q=80' },
+        { id:'b12', title:'মিসির আলি সমগ্র', author:'হুমায়ূন আহমেদ', price:720, original:900, genre:'উপন্যাস', emoji:'🔍', color:'#fce4ec', cover:'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=200&q=80' },
+    ];
+
+    let currentBookFilter = 'সব';
+
+    function showBookShop() {
+        hideAll();
+        document.getElementById('bookshop-page').style.display = 'block';
+        renderBooks(demoBooks);
+        window.scrollTo(0,0);
+    }
+
+    function renderBooks(list) {
+        const grid = document.getElementById('books-grid');
+        if (!list.length) { grid.innerHTML = '<div class="no-result">😔 কোনো বই পাওয়া যায়নি</div>'; return; }
+        grid.innerHTML = list.map(b => {
+            const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
+            return `
+            <div class="book-card">
+                <div class="book-cover" style="background:${b.color}">
+                    ${b.cover ? `<img src="${b.cover}" alt="${b.title}" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=font-size:55px>${b.emoji}</span>'">` : `<span style="font-size:55px">${b.emoji}</span>`}
+                    <span class="book-genre-badge">${b.genre}</span>
+                    ${disc ? `<span style="position:absolute;top:7px;left:7px;background:#ff4444;color:white;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:bold">${disc}% ছাড়</span>` : ''}
+                </div>
+                <div class="book-info">
+                    <div class="book-title">${b.title}</div>
+                    <div class="book-author">✍️ ${b.author}</div>
+                    <div>
+                        <span class="book-price">৳${b.price}</span>
+                        ${b.original > b.price ? `<span class="book-old-price">৳${b.original}</span>` : ''}
+                    </div>
+                    <button class="book-add-btn" onclick="addBookToCart('${b.id}')">🛒 Cart এ যোগ করুন</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function filterBooks(btn, genre) {
+        document.querySelectorAll('.book-cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentBookFilter = genre;
+        renderBooks(genre === 'সব' ? demoBooks : demoBooks.filter(b => b.genre === genre));
+    }
+
+    function addBookToCart(bookId) {
+        const book = demoBooks.find(b => b.id === bookId);
+        if (!book) return;
+        const key = 'book_' + bookId;
+        const existing = cart.find(c => c.bookId === bookId);
+        if (existing) existing.qty++;
+        else cart.push({ bookId, qty: 1, bookData: book });
+        updateCartCount();
+        showToast('📚 ' + book.title + ' cart এ যোগ হয়েছে!');
+    }
+
+    // Override renderCart to handle books too
+    const _origRenderCart = renderCart;
+    function renderCart() {
+        const allProducts = getProducts();
+        const body = document.getElementById('cart-body');
+        const footer = document.getElementById('cart-footer');
+        if (!cart.length) {
+            body.innerHTML = '<div class="cart-empty"><div>🛒</div><p>Cart খালি আছে</p></div>';
+            footer.style.display = 'none'; return;
+        }
+        body.innerHTML = cart.map(c => {
+            let name, price, img, emoji;
+            if (c.bookId) {
+                const b = c.bookData;
+                name = b.title; price = b.price; img = ''; emoji = b.emoji;
+            } else {
+                const p = allProducts[c.idx];
+                name = p.name; price = p.price;
+                img = p.img ? `<img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.parentNode.textContent='${p.emoji}'">` : '';
+                emoji = p.emoji;
+            }
+            const key = c.bookId ? `'${c.bookId}'` : c.idx;
+            const qtyFn = c.bookId ? `bookCartQty('${c.bookId}',VAL)` : `cartQty(${c.idx},VAL)`;
+            const rmFn = c.bookId ? `removeBookFromCart('${c.bookId}')` : `removeFromCart(${c.idx})`;
+            return `
+            <div class="cart-item">
+                <div class="cart-item-emoji">${img || emoji}</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${name}</div>
+                    <div class="cart-item-price">৳${(price*c.qty).toLocaleString()}</div>
+                    <div class="cart-item-qty">
+                        <button onclick="${qtyFn.replace('VAL','-1')}">−</button>
+                        <span>${c.qty}</span>
+                        <button onclick="${qtyFn.replace('VAL','1')}">+</button>
+                    </div>
+                </div>
+                <button class="cart-remove" onclick="${rmFn}">🗑️</button>
+            </div>`;
+        }).join('');
+        const total = cart.reduce((s,c) => {
+            if (c.bookId) return s + c.bookData.price * c.qty;
+            return s + allProducts[c.idx].price * c.qty;
+        }, 0);
+        document.getElementById('cart-total-price').textContent = '৳' + total.toLocaleString();
+        footer.style.display = 'block';
+    }
+
+    function bookCartQty(bookId, val) {
+        const item = cart.find(c => c.bookId === bookId);
+        if (item) item.qty = Math.max(1, item.qty + val);
+        updateCartCount(); renderCart();
+    }
+    function removeBookFromCart(bookId) {
+        cart = cart.filter(c => c.bookId !== bookId);
+        updateCartCount(); renderCart();
+    }
     renderProducts(getProducts());
+    document.getElementById('section-title').innerHTML = '🔥 জনপ্রিয় পণ্য <button class="see-all-btn" onclick="filterCat(document.querySelector(\'.cat-btn\'),\'সব\')">সব দেখুন →</button>';
 </script>
 </body>
 </html>
