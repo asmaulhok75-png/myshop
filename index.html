@@ -377,6 +377,59 @@
         .related-book-price { font-size: 13px; color: #c62828; font-weight: 700; }
         .related-products-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; padding: 0 14px 28px; }
 
+        /* PDF PREVIEW MODAL */
+        .pdf-modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55); z-index: 500;
+            align-items: center; justify-content: center;
+        }
+        .pdf-modal-overlay.open { display: flex; }
+        .pdf-modal {
+            background: white; border-radius: 14px;
+            width: min(480px, 95vw); max-height: 88vh;
+            overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+            position: relative; animation: popIn 0.25s ease;
+        }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .pdf-modal-close {
+            position: absolute; top: 12px; right: 14px;
+            background: none; border: none; font-size: 22px;
+            cursor: pointer; color: #555; z-index: 2;
+        }
+        .pdf-preview-header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white; padding: 20px 20px 16px; border-radius: 14px 14px 0 0;
+        }
+        .pdf-preview-header .pdf-icon { font-size: 13px; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+        .pdf-preview-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; line-height: 1.4; }
+        .pdf-preview-author { font-size: 12px; opacity: 0.85; }
+        .pdf-preview-body { padding: 18px 20px; }
+        .pdf-page-sim {
+            border: 1px solid #e0e0e0; border-radius: 8px;
+            padding: 18px; background: #fafafa; margin-bottom: 14px;
+            font-size: 13px; line-height: 1.9; color: #444;
+            position: relative;
+        }
+        .pdf-page-sim::before {
+            content: 'পৃষ্ঠা ১'; position: absolute; top: 8px; right: 12px;
+            font-size: 10px; color: #bbb;
+        }
+        .pdf-page-sim h4 { font-size: 14px; color: #1a237e; margin-bottom: 8px; font-weight: 700; }
+        .pdf-blur-area {
+            background: linear-gradient(to bottom, #fafafa 0%, rgba(255,255,255,0.3) 100%);
+            height: 80px; margin-top: -40px; position: relative; z-index: 1;
+            display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px;
+        }
+        .pdf-blur-text { font-size: 12px; color: #aaa; }
+        .pdf-info-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .pdf-info-chip { background: #f0f4ff; color: #1a237e; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+        .pdf-price-row { display: flex; align-items: center; justify-content: space-between; padding: 14px; background: #f9f9f9; border-radius: 10px; margin-bottom: 14px; }
+        .pdf-price { font-size: 22px; font-weight: 900; color: #c62828; }
+        .pdf-old-price { font-size: 13px; color: #aaa; text-decoration: line-through; }
+        .pdf-actions { display: flex; gap: 10px; }
+        .pdf-buy-btn { flex: 1; background: #f7a800; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .pdf-cart-btn { flex: 1; background: #1a237e; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
+
         @media (max-width: 620px) {
             .nav-search { display: none; }
             .nav-right { display: none; }
@@ -483,19 +536,19 @@
         <span>পর্যন্ত ৩০% ছাড়</span>
     </div>
 
-    <!-- BANNER -->
-    <div class="banner">
-        <h1>🎉 বিশেষ অফার চলছে!</h1>
-        <p>৳৫০০+ অর্ডারে ফ্রি ডেলিভারি — আজই অর্ডার করুন</p>
-        <button class="banner-btn" onclick="document.getElementById('products-grid').scrollIntoView({behavior:'smooth'})">এখনই কিনুন 🛒</button>
-    </div>
-
-    <!-- FEATURES ROW -->
+    <!-- FEATURES ROW — একদম উপরে -->
     <div class="features-row">
         <div class="feature-item"><div class="fi">🚚</div><b>ফ্রি ডেলিভারি</b>৳৫০০+ অর্ডারে</div>
         <div class="feature-item"><div class="fi">↩️</div><b>৭ দিন রিটার্ন</b>সমস্যায় ফেরত</div>
         <div class="feature-item"><div class="fi">🔒</div><b>নিরাপদ পেমেন্ট</b>bKash / Nagad</div>
         <div class="feature-item"><div class="fi">📞</div><b>সাপোর্ট</b>সকাল ১০ — রাত ৮</div>
+    </div>
+
+    <!-- BANNER -->
+    <div class="banner">
+        <h1>🎉 বিশেষ অফার চলছে!</h1>
+        <p>৳৫০০+ অর্ডারে ফ্রি ডেলিভারি — আজই অর্ডার করুন</p>
+        <button class="banner-btn" onclick="document.getElementById('products-grid').scrollIntoView({behavior:'smooth'})">এখনই কিনুন 🛒</button>
     </div>
 
     <!-- BRANDS (উপরে) -->
@@ -617,7 +670,7 @@
 
 <!-- ORDER FORM PAGE -->
 <div id="order-page" style="display:none; background:#f4f4f4; min-height:100vh;">
-    <button class="back-btn" onclick="showDetails(currentProduct)">← ফিরে যান</button>
+    <button class="back-btn" onclick="window._bookOrderMode ? (window._bookOrderMode=false, showBookShop()) : showDetails(currentProduct)">← ফিরে যান</button>
     <div style="max-width:500px; margin:0 auto; padding:0 16px 40px;">
         <h2 style="font-size:20px; color:#1a237e; margin-bottom:18px;">📝 অর্ডার করুন</h2>
         <div style="background:white; border-radius:10px; padding:18px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
@@ -759,6 +812,39 @@
     <div class="section-title" style="margin-top:8px">📚 একই ধরনের বই</div>
     <div class="related-books-row" id="related-books-grid"></div>
 </div>
+<!-- PDF PREVIEW MODAL -->
+<div class="pdf-modal-overlay" id="pdf-modal-overlay" onclick="if(event.target===this)closePdfModal()">
+    <div class="pdf-modal">
+        <button class="pdf-modal-close" onclick="closePdfModal()">✕</button>
+        <div class="pdf-preview-header">
+            <div class="pdf-icon">📄 একটু পড়ে দেখুন</div>
+            <div class="pdf-preview-title" id="pm-title"></div>
+            <div class="pdf-preview-author" id="pm-author"></div>
+        </div>
+        <div class="pdf-preview-body">
+            <div class="pdf-info-row" id="pm-chips"></div>
+            <div class="pdf-page-sim">
+                <h4 id="pm-chapter">ভূমিকা</h4>
+                <p id="pm-text"></p>
+            </div>
+            <div class="pdf-blur-area">
+                <div class="pdf-blur-text">🔒 সম্পূর্ণ বই পড়তে কিনুন</div>
+            </div>
+            <div class="pdf-price-row">
+                <div>
+                    <div class="pdf-price" id="pm-price"></div>
+                    <div class="pdf-old-price" id="pm-old"></div>
+                </div>
+                <div style="font-size:12px;color:#2e7d32;font-weight:600">✅ স্টকে আছে</div>
+            </div>
+            <div class="pdf-actions">
+                <button class="pdf-buy-btn" onclick="pdfBuyNow()">এখনই কিনুন 🛍️</button>
+                <button class="pdf-cart-btn" onclick="pdfAddToCart()">🛒 Cart এ যোগ করুন</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="cart-sidebar" id="cart-sidebar">
     <div class="cart-header">
@@ -1185,7 +1271,7 @@
         grid.innerHTML = list.map(b => {
             const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
             return `
-            <div class="book-card" onclick="showBookDetails('${b.id}')">
+            <div class="book-card" onclick="openPdfModal('${b.id}')">
                 <div class="book-cover" style="background:${b.color}">
                     ${b.cover ? `<img src="${b.cover}" alt="${b.title}" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=font-size:55px>${b.emoji}</span>'">` : `<span style="font-size:55px">${b.emoji}</span>`}
                     <span class="book-genre-badge">${b.genre}</span>
@@ -1273,11 +1359,116 @@
     }
     function bookBuyNow() {
         if (!currentBookId) return;
-        const b = demoBooks.find(x => x.id === currentBookId);
+        openBookOrderForm(currentBookId);
+    }
+
+    // ===== PDF PREVIEW MODAL =====
+    let pdfCurrentBookId = null;
+
+    function openPdfModal(bookId) {
+        const b = demoBooks.find(x => x.id === bookId);
         if (!b) return;
-        // Add to cart then open cart
-        addBookToCart(currentBookId);
-        openCart();
+        pdfCurrentBookId = bookId;
+        const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
+        document.getElementById('pm-title').textContent = b.title;
+        document.getElementById('pm-author').textContent = 'লেখক: ' + b.author + ' | প্রকাশক: ' + (b.publisher || '');
+        document.getElementById('pm-price').textContent = '৳' + b.price;
+        document.getElementById('pm-old').textContent = b.original > b.price ? '৳' + b.original : '';
+        document.getElementById('pm-chips').innerHTML = [
+            b.genre, b.pages ? b.pages + ' পৃষ্ঠা' : '', b.edition || ''
+        ].filter(Boolean).map(c => `<span class="pdf-info-chip">${c}</span>`).join('');
+        // Show first 2 sentences of summary
+        const preview = b.summary ? b.summary.split('।').slice(0,2).join('।') + '।' : '';
+        document.getElementById('pm-text').textContent = preview;
+        document.getElementById('pdf-modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePdfModal() {
+        document.getElementById('pdf-modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function pdfBuyNow() {
+        if (!pdfCurrentBookId) return;
+        closePdfModal();
+        openBookOrderForm(pdfCurrentBookId);
+    }
+
+    function pdfAddToCart() {
+        if (!pdfCurrentBookId) return;
+        addBookToCart(pdfCurrentBookId);
+        closePdfModal();
+    }
+
+    // ===== BOOK ORDER FORM =====
+    let currentBookOrder = null;
+
+    function openBookOrderForm(bookId) {
+        const b = demoBooks.find(x => x.id === bookId);
+        if (!b) return;
+        currentBookOrder = b;
+        // Fill order form for book
+        const imgDiv = document.getElementById('o-img');
+        imgDiv.innerHTML = b.cover
+            ? `<img src="${b.cover}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.textContent='${b.emoji}'">`
+            : b.emoji;
+        document.getElementById('o-name').textContent = b.title;
+        document.getElementById('o-price').textContent = '৳' + b.price;
+        orderQty = 1;
+        document.getElementById('o-qty').textContent = 1;
+        // Patch updateTotal for book
+        window._bookOrderMode = true;
+        updateTotal();
+        hideAll();
+        document.getElementById('order-page').style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    // Patch updateTotal to support book mode
+    const _origUpdateTotal = updateTotal;
+    function updateTotal() {
+        if (window._bookOrderMode && currentBookOrder) {
+            const subtotal = currentBookOrder.price * orderQty;
+            const delivery = parseInt(document.getElementById('o-location').value);
+            document.getElementById('o-subtotal').textContent = '৳' + subtotal.toLocaleString();
+            document.getElementById('o-delivery').textContent = '৳' + delivery;
+            document.getElementById('o-total').textContent = '৳' + (subtotal + delivery).toLocaleString();
+        } else {
+            _origUpdateTotal();
+        }
+    }
+
+    // Patch placeOrder for book
+    const _origPlaceOrder = placeOrder;
+    function placeOrder() {
+        if (window._bookOrderMode && currentBookOrder) {
+            const name = document.getElementById('o-customer').value.trim();
+            const phone = document.getElementById('o-phone').value.trim();
+            const address = document.getElementById('o-address').value.trim();
+            if (!name || !phone || !address) { alert('❌ সব তথ্য পূরণ করুন!'); return; }
+            const delivery = parseInt(document.getElementById('o-location').value);
+            const total = currentBookOrder.price * orderQty + delivery;
+            const orderId = 'ORD-' + Date.now().toString().slice(-6);
+            const payment = document.getElementById('o-payment').value;
+            const orders = JSON.parse(localStorage.getItem('nb_orders') || '[]');
+            orders.push({ id: orderId, customer: name, phone, address,
+                product: currentBookOrder.title + ' (বই) (' + orderQty + 'টি)',
+                total, payment, status: 'pending',
+                date: new Date().toLocaleDateString('bn-BD') });
+            localStorage.setItem('nb_orders', JSON.stringify(orders));
+            document.getElementById('s-orderid').textContent = orderId;
+            document.getElementById('s-name').textContent = name;
+            document.getElementById('s-phone').textContent = phone;
+            document.getElementById('s-total').textContent = '৳' + total.toLocaleString();
+            cart = []; updateCartCount();
+            window._bookOrderMode = false; currentBookOrder = null;
+            hideAll();
+            document.getElementById('success-page').style.display = 'block';
+            window.scrollTo(0,0);
+        } else {
+            _origPlaceOrder();
+        }
     }
 
     function addBookToCart(bookId) {
