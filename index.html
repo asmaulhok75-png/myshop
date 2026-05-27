@@ -325,6 +325,58 @@
             position: absolute; top: 7px; right: 7px; background: rgba(26,35,126,0.85);
             color: white; font-size: 9px; padding: 2px 7px; border-radius: 10px;
         }
+
+        /* BOOK DETAILS PAGE */
+        .book-details-hero {
+            background: white; padding: 20px 16px 24px;
+            display: flex; gap: 20px; flex-wrap: wrap;
+        }
+        .book-details-cover {
+            width: 140px; flex-shrink: 0; border-radius: 8px;
+            overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            position: relative; align-self: flex-start;
+        }
+        .book-details-cover img { width: 100%; display: block; min-height: 180px; object-fit: cover; }
+        .book-details-cover .disc-badge {
+            position: absolute; top: 8px; left: 8px;
+            background: #ff4444; color: white; font-size: 11px;
+            font-weight: 900; padding: 3px 8px; border-radius: 20px;
+        }
+        .book-details-info { flex: 1; min-width: 200px; }
+        .book-details-title { font-size: 19px; font-weight: 800; color: #1a237e; margin-bottom: 4px; line-height: 1.4; }
+        .book-details-author { font-size: 13px; color: #1a9e3f; margin-bottom: 10px; font-weight: 600; }
+        .book-stars { color: #f7a800; font-size: 15px; margin-bottom: 8px; }
+        .book-stars span { color: #888; font-size: 12px; margin-left: 5px; }
+        .book-details-price-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .book-details-price { font-size: 26px; font-weight: 900; color: #c62828; }
+        .book-details-old { font-size: 14px; color: #aaa; text-decoration: line-through; }
+        .book-stock-row { font-size: 13px; color: #2e7d32; font-weight: 600; margin-bottom: 14px; }
+        .book-details-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .book-buy-btn { background: #f7a800; color: white; border: none; padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .book-cart-btn { background: #1a237e; color: white; border: none; padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
+
+        .book-details-tabs { background: white; display: flex; border-bottom: 2px solid #eee; margin-top: 16px; }
+        .book-tab { padding: 11px 18px; font-size: 13px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+        .book-tab.active { color: #1a237e; border-bottom-color: #1a9e3f; }
+        .book-tab-content { background: white; padding: 16px; margin-bottom: 12px; display: none; }
+        .book-tab-content.active { display: block; }
+        .book-spec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .book-spec-table tr { border-bottom: 1px solid #f0f0f0; }
+        .book-spec-table td { padding: 9px 8px; color: #555; }
+        .book-spec-table td:first-child { font-weight: 700; color: #333; width: 130px; }
+        .book-summary-text { font-size: 13px; color: #555; line-height: 1.9; }
+
+        /* RELATED */
+        .related-books-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; padding: 0 14px 28px; }
+        .related-book-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer; transition: 0.2s; }
+        .related-book-card:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.12); }
+        .related-book-cover { height: 120px; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .related-book-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .related-book-info { padding: 8px; }
+        .related-book-title { font-size: 12px; font-weight: 700; color: #222; margin-bottom: 3px; line-height: 1.3; }
+        .related-book-price { font-size: 13px; color: #c62828; font-weight: 700; }
+        .related-products-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; padding: 0 14px 28px; }
+
         @media (max-width: 620px) {
             .nav-search { display: none; }
             .nav-right { display: none; }
@@ -446,25 +498,10 @@
         <div class="feature-item"><div class="fi">📞</div><b>সাপোর্ট</b>সকাল ১০ — রাত ৮</div>
     </div>
 
-    <!-- CATEGORY BAR -->
-    <div class="category-bar" id="category-bar">
-        <button class="cat-btn active" onclick="filterCat(this,'সব')">🏠 সব পণ্য</button>
-        <button class="cat-btn" onclick="filterCat(this,'কাপড়')">👕 কাপড়</button>
-        <button class="cat-btn" onclick="filterCat(this,'ইলেকট্রনিক্স')">📱 ইলেকট্রনিক্স</button>
-        <button class="cat-btn" onclick="filterCat(this,'অন্যান্য')">📦 অন্যান্য</button>
-    </div>
-
-    <!-- PRODUCTS -->
-    <div class="section-title" id="section-title">
-        🔥 জনপ্রিয় পণ্য
-        <button class="see-all-btn" onclick="filterCat(document.querySelector('.cat-btn'),'সব')">সব দেখুন →</button>
-    </div>
-    <div class="products" id="products-grid"></div>
-
-    <!-- OUR BRANDS -->
+    <!-- BRANDS (উপরে) -->
     <div id="brands-anchor"></div>
-    <div class="section-title">🏬 আমাদের ব্র্যান্ড</div>
-    <div class="brands-section">
+    <div class="section-title" style="padding-bottom:6px">🏬 আমাদের ব্র্যান্ড</div>
+    <div class="brands-section" style="padding-bottom:10px">
         <div class="brands-grid">
             <div class="brand-card" onclick="showToast('Nobobi Store — আপনি এখানেই আছেন! 🛒')">
                 <div class="brand-icon">🛒</div>
@@ -472,7 +509,7 @@
                 <div class="brand-tagline">ফ্যাশন ও ইলেকট্রনিক্স</div>
                 <span class="brand-badge">✅ সক্রিয়</span>
             </div>
-            <div class="brand-card" onclick="showBookShop()" style="border-color:#1a237e">
+            <div class="brand-card" onclick="showBookShop()" style="border-color:#1a237e;cursor:pointer">
                 <div class="brand-icon">📚</div>
                 <div class="brand-name">Nobobi Book Shop</div>
                 <div class="brand-tagline">বই, স্টেশনারি ও শিক্ষা</div>
@@ -492,6 +529,21 @@
             </div>
         </div>
     </div>
+
+    <!-- CATEGORY BAR -->
+    <div class="category-bar" id="category-bar">
+        <button class="cat-btn active" onclick="filterCat(this,'সব')">🏠 সব পণ্য</button>
+        <button class="cat-btn" onclick="filterCat(this,'কাপড়')">👕 কাপড়</button>
+        <button class="cat-btn" onclick="filterCat(this,'ইলেকট্রনিক্স')">📱 ইলেকট্রনিক্স</button>
+        <button class="cat-btn" onclick="filterCat(this,'অন্যান্য')">📦 অন্যান্য</button>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="section-title" id="section-title">
+        🔥 জনপ্রিয় পণ্য
+        <button class="see-all-btn" onclick="filterCat(document.querySelector('.cat-btn'),'সব')">সব দেখুন →</button>
+    </div>
+    <div class="products" id="products-grid"></div>
 
     <!-- FOOTER -->
     <footer class="site-footer">
@@ -558,6 +610,9 @@
             <button class="cart-btn-big" onclick="addToCartFromDetails()">🛒 Cart এ যোগ করুন</button>
         </div>
     </div>
+    <!-- RELATED PRODUCTS -->
+    <div class="section-title" style="margin-top:4px">🛍️ একই ক্যাটাগরির পণ্য</div>
+    <div class="related-products-row" id="related-products-grid"></div>
 </div>
 
 <!-- ORDER FORM PAGE -->
@@ -649,6 +704,60 @@
         <button class="book-cat-btn" onclick="filterBooks(this,'বিজ্ঞান')">🔬 বিজ্ঞান</button>
     </div>
     <div class="books-grid" id="books-grid"></div>
+</div>
+
+<!-- BOOK DETAILS PAGE -->
+<div id="book-details-page" style="display:none; background:#f4f4f4; min-height:100vh;">
+    <button class="back-btn" style="color:#1a237e" onclick="showBookShop()">← বুক শপে ফিরুন</button>
+    <div class="book-details-hero">
+        <div class="book-details-cover">
+            <img id="bd-cover" src="" alt="">
+            <div class="disc-badge" id="bd-disc" style="display:none"></div>
+        </div>
+        <div class="book-details-info">
+            <div class="book-details-title" id="bd-title"></div>
+            <div class="book-details-author" id="bd-author"></div>
+            <div class="book-stars" id="bd-stars">★★★★☆ <span>4.2 | 26 Ratings</span></div>
+            <div class="book-details-price-row">
+                <div class="book-details-price" id="bd-price"></div>
+                <div class="book-details-old" id="bd-old"></div>
+            </div>
+            <div class="book-stock-row" id="bd-stock">✅ In Stock</div>
+            <div class="book-details-actions">
+                <button class="book-buy-btn" onclick="bookBuyNow()">এখনই কিনুন</button>
+                <button class="book-cart-btn" onclick="addBookToCartFromDetails()">🛒 Cart এ যোগ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="book-details-tabs">
+        <div class="book-tab active" onclick="switchBookTab(this,'tab-summary')">Summary</div>
+        <div class="book-tab" onclick="switchBookTab(this,'tab-spec')">Specification</div>
+        <div class="book-tab" onclick="switchBookTab(this,'tab-author')">Author</div>
+    </div>
+    <div class="book-tab-content active" id="tab-summary">
+        <p class="book-summary-text" id="bd-summary"></p>
+    </div>
+    <div class="book-tab-content" id="tab-spec">
+        <table class="book-spec-table">
+            <tr><td>Title</td><td id="spec-title"></td></tr>
+            <tr><td>Author</td><td id="spec-author"></td></tr>
+            <tr><td>Publisher</td><td id="spec-publisher"></td></tr>
+            <tr><td>Category</td><td id="spec-genre"></td></tr>
+            <tr><td>Edition</td><td id="spec-edition"></td></tr>
+            <tr><td>Number of Pages</td><td id="spec-pages"></td></tr>
+            <tr><td>Country</td><td>বাংলাদেশ</td></tr>
+            <tr><td>Language</td><td>বাংলা</td></tr>
+        </table>
+    </div>
+    <div class="book-tab-content" id="tab-author">
+        <p class="book-summary-text" id="bd-author-bio"></p>
+    </div>
+
+    <!-- RELATED BOOKS -->
+    <div class="section-title" style="margin-top:8px">📚 একই ধরনের বই</div>
+    <div class="related-books-row" id="related-books-grid"></div>
 </div>
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="cart-sidebar" id="cart-sidebar">
@@ -925,6 +1034,21 @@
         document.getElementById('d-warranty').textContent = p.warranty || 'নেই';
         qty = 1;
         document.getElementById('qty').textContent = qty;
+
+        // Related products — same category
+        const cat = p.cat || p.category || '';
+        const related = allProducts.filter((x, i) => i !== index && (x.cat||x.category) === cat).slice(0,6);
+        const relGrid = document.getElementById('related-products-grid');
+        relGrid.innerHTML = related.length ? related.map(r => {
+            const ri = allProducts.findIndex(x => x.id === r.id);
+            const disc = r.original && r.original > r.price ? Math.round((1-r.price/r.original)*100) : 0;
+            return `<div class="card" onclick="showDetails(${ri})">
+                <div class="card-img" style="height:110px">${r.img ? `<img src="${r.img}" alt="${r.name}" onerror="this.style.display='none';this.parentNode.textContent='${r.emoji}'">` : r.emoji}
+                ${disc ? `<span class="card-badge">${disc}%</span>` : ''}</div>
+                <div class="card-body"><h3>${r.name}</h3>
+                <span class="price">৳${r.price.toLocaleString()}</span></div></div>`;
+        }).join('') : '<p style="color:#aaa;font-size:13px;padding:0 14px">একই ক্যাটাগরিতে আর পণ্য নেই</p>';
+
         hideAll();
         document.getElementById('details-page').style.display = 'block';
         window.scrollTo(0,0);
@@ -938,7 +1062,7 @@
     }
 
     function hideAll() {
-        ['home-page','details-page','order-page','success-page','bookshop-page'].forEach(id => {
+        ['home-page','details-page','order-page','success-page','bookshop-page','book-details-page'].forEach(id => {
             document.getElementById(id).style.display = 'none';
         });
     }
@@ -1031,26 +1155,27 @@
 
     // ===== BOOK SHOP =====
     const demoBooks = [
-        { id:'b1', title:'পথের পাঁচালী', author:'বিভূতিভূষণ বন্দ্যোপাধ্যায়', price:280, original:350, genre:'উপন্যাস', emoji:'📗', color:'#e8f5e9', cover:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&q=80' },
-        { id:'b2', title:'হুমায়ূন আহমেদ সমগ্র', author:'হুমায়ূন আহমেদ', price:650, original:800, genre:'উপন্যাস', emoji:'📘', color:'#e3f2fd', cover:'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200&q=80' },
-        { id:'b3', title:'দেয়াল', author:'হুমায়ূন আহমেদ', price:220, original:260, genre:'উপন্যাস', emoji:'📙', color:'#fff3e0', cover:'https://images.unsplash.com/photo-1495640452828-3df6795cf69b?w=200&q=80' },
-        { id:'b4', title:'রিয়াযুস সালেহীন', author:'ইমাম নববী (রহ.)', price:380, original:450, genre:'ইসলামিক', emoji:'📕', color:'#fce4ec', cover:'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=200&q=80' },
-        { id:'b5', title:'কুরআন শরীফ (বাংলা অর্থসহ)', author:'অনুবাদ: ড. মুজিবুর রহমান', price:550, original:650, genre:'ইসলামিক', emoji:'📖', color:'#f3e5f5', cover:'https://images.unsplash.com/photo-1585036156171-384164a8c675?w=200&q=80' },
-        { id:'b6', title:'গণিত ক্লাস ৯-১০', author:'NCTB', price:180, original:200, genre:'শিক্ষামূলক', emoji:'📐', color:'#e0f7fa', cover:'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=200&q=80' },
-        { id:'b7', title:'বিজ্ঞান ক্লাস ৮', author:'NCTB', price:160, original:180, genre:'শিক্ষামূলক', emoji:'🔬', color:'#e8f5e9', cover:'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200&q=80' },
-        { id:'b8', title:'ছোটদের মজার গল্প', author:'রকিব হাসান', price:150, original:200, genre:'শিশু', emoji:'🧒', color:'#fff8e1', cover:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80' },
-        { id:'b9', title:'ছোটদের বিজ্ঞান', author:'মুহম্মদ জাফর ইকবাল', price:200, original:240, genre:'শিশু', emoji:'🚀', color:'#e3f2fd', cover:'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=200&q=80' },
-        { id:'b10', title:'বিশ্ব বিজ্ঞান', author:'মুহম্মদ জাফর ইকবাল', price:320, original:380, genre:'বিজ্ঞান', emoji:'🌍', color:'#e8eaf6', cover:'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200&q=80' },
-        { id:'b11', title:'আলোর গতি', author:'জাফর ইকবাল', price:260, original:300, genre:'বিজ্ঞান', emoji:'⚡', color:'#fff9c4', cover:'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=200&q=80' },
-        { id:'b12', title:'মিসির আলি সমগ্র', author:'হুমায়ূন আহমেদ', price:720, original:900, genre:'উপন্যাস', emoji:'🔍', color:'#fce4ec', cover:'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=200&q=80' },
+        { id:'b1', title:'সবুজ পাতার বন', author:'শাইখ আবদুল আযীয আত তারিফী', publisher:'সীরাত পাবলিকেশন', price:169, original:225, genre:'ইসলামিক', emoji:'📗', color:'#e8f5e9', pages:'160', edition:'1st Published, 2018', cover:'https://images.unsplash.com/photo-1585036156171-384164a8c675?w=300&q=80', summary:'আল্লাহর রাসুলকে ﷺ একটা চমৎকার গুণ দেওয়া হয়েছিল — জাওয়ামিউল কালাম — অর্থাৎ অল্প কথায় গভীর ভাব ব্যক্ত করার ক্ষমতা। যারা ইলমের সাথে প্রজ্ঞার মিশেল ইলমের গভীর থেকে গভীরে গিয়ে মণি মুক্তা আহরণ করতে চান, এই বইটি তাদের জন্য। এখানে রয়েছে ইসলামের মূল শিক্ষার সারনির্যাস, যা পাঠককে আলোর পথ দেখাবে।', authorBio:'শাইখ আবদুল আযীয আত তারিফী একজন প্রখ্যাত ইসলামিক স্কলার। তিনি আরব বিশ্বে ইসলামিক জ্ঞান ও গবেষণায় বিশেষ অবদান রাখছেন।' },
+        { id:'b2', title:'পথের পাঁচালী', author:'বিভূতিভূষণ বন্দ্যোপাধ্যায়', publisher:'দে\'জ পাবলিশিং', price:280, original:350, genre:'উপন্যাস', emoji:'📙', color:'#fff3e0', pages:'250', edition:'নতুন সংস্করণ', cover:'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&q=80', summary:'পথের পাঁচালী বাংলা সাহিত্যের একটি কালজয়ী উপন্যাস। অপু ও দুর্গার শৈশবের গল্প, গ্রামীণ বাংলার রূপ ও গ্রামের মানুষের জীবনযাত্রা এখানে অপূর্বভাবে ফুটিয়ে তোলা হয়েছে।', authorBio:'বিভূতিভূষণ বন্দ্যোপাধ্যায় (১৮৯৪–১৯৫০) বাংলা সাহিত্যের অন্যতম শ্রেষ্ঠ ঔপন্যাসিক।' },
+        { id:'b3', title:'হিমু সমগ্র', author:'হুমায়ূন আহমেদ', publisher:'অন্যপ্রকাশ', price:650, original:800, genre:'উপন্যাস', emoji:'📘', color:'#e3f2fd', pages:'480', edition:'৫ম মুদ্রণ', cover:'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&q=80', summary:'হিমু বাংলা সাহিত্যের এক অনন্য চরিত্র। হলুদ পাঞ্জাবি পরা, খালি পায়ে হাঁটা হিমুর দর্শন, তার রহস্যময় জীবন ও অদ্ভুত কার্যকলাপ পাঠককে বারবার ভাবায়।', authorBio:'হুমায়ূন আহমেদ (১৯৪৮–২০১২) বাংলাদেশের সবচেয়ে জনপ্রিয় ঔপন্যাসিক ও নাট্যকার।' },
+        { id:'b4', title:'দেয়াল', author:'হুমায়ূন আহমেদ', publisher:'অন্যপ্রকাশ', price:220, original:260, genre:'উপন্যাস', emoji:'📕', color:'#fce4ec', pages:'200', edition:'২য় সংস্করণ', cover:'https://images.unsplash.com/photo-1495640452828-3df6795cf69b?w=300&q=80', summary:'হুমায়ূন আহমেদের শেষ উপন্যাস। ১৯৭৫ সালের রাজনৈতিক পটপরিবর্তনের ঘটনাবলি নিয়ে লেখা এই উপন্যাস বাংলাদেশের ইতিহাসের এক গুরুত্বপূর্ণ অধ্যায়।', authorBio:'হুমায়ূন আহমেদ (১৯৪৮–২০১২) বাংলাদেশের সবচেয়ে জনপ্রিয় ঔপন্যাসিক ও নাট্যকার।' },
+        { id:'b5', title:'রিয়াযুস সালেহীন', author:'ইমাম নববী (রহ.)', publisher:'মাকতাবাতুল আযহার', price:380, original:450, genre:'ইসলামিক', emoji:'📖', color:'#f3e5f5', pages:'620', edition:'নতুন অনুবাদ', cover:'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=300&q=80', summary:'রিয়াযুস সালেহীন ইসলামিক হাদিস সংকলনের একটি বিখ্যাত গ্রন্থ। মুসলিম জীবনযাপনের প্রতিটি দিকের জন্য নবীজির হাদিস এখানে সহজবোধ্যভাবে সংকলিত হয়েছে।', authorBio:'ইমাম নববী (রহ.) একজন বিখ্যাত ইসলামিক পণ্ডিত ছিলেন যিনি ১৩শ শতাব্দীতে জীবিত ছিলেন।' },
+        { id:'b6', title:'গণিত ক্লাস ৯-১০', author:'NCTB', publisher:'জাতীয় শিক্ষাক্রম', price:180, original:200, genre:'শিক্ষামূলক', emoji:'📐', color:'#e0f7fa', pages:'320', edition:'২০২৪ সংস্করণ', cover:'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=300&q=80', summary:'এসএসসি গণিত পাঠ্যপুস্তক। বীজগণিত, জ্যামিতি, পরিসংখ্যান সহ সকল অধ্যায় সহজভাবে উপস্থাপন করা হয়েছে।', authorBio:'জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) বাংলাদেশের সকল স্তরের পাঠ্যপুস্তক প্রণয়ন করে।' },
+        { id:'b7', title:'বিজ্ঞান ক্লাস ৮', author:'NCTB', publisher:'জাতীয় শিক্ষাক্রম', price:160, original:180, genre:'শিক্ষামূলক', emoji:'🔬', color:'#e8f5e9', pages:'240', edition:'২০২৪ সংস্করণ', cover:'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=300&q=80', summary:'অষ্টম শ্রেণির বিজ্ঞান পাঠ্যপুস্তক। পদার্থবিজ্ঞান, রসায়ন, জীববিজ্ঞান ও পরিবেশ বিজ্ঞানের মৌলিক ধারণাগুলো এখানে আলোচনা করা হয়েছে।', authorBio:'জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)।' },
+        { id:'b8', title:'ছোটদের মজার গল্প', author:'রকিব হাসান', publisher:'সেবা প্রকাশনী', price:150, original:200, genre:'শিশু', emoji:'🧒', color:'#fff8e1', pages:'128', edition:'৩য় মুদ্রণ', cover:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80', summary:'শিশুদের জন্য মজাদার ও শিক্ষামূলক গল্পের সংকলন। প্রতিটি গল্পে নৈতিকতা ও মূল্যবোধের শিক্ষা দেওয়া হয়েছে।', authorBio:'রকিব হাসান একজন জনপ্রিয় শিশুসাহিত্যিক।' },
+        { id:'b9', title:'ছোটদের বিজ্ঞান', author:'মুহম্মদ জাফর ইকবাল', publisher:'সময় প্রকাশন', price:200, original:240, genre:'শিশু', emoji:'🚀', color:'#e3f2fd', pages:'160', edition:'৪র্থ মুদ্রণ', cover:'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=300&q=80', summary:'শিশুদের জন্য বিজ্ঞানকে মজাদার করে উপস্থাপন করা হয়েছে। বিজ্ঞানের বিভিন্ন বিষয় সহজ ভাষায় ব্যাখ্যা করা হয়েছে।', authorBio:'মুহম্মদ জাফর ইকবাল বাংলাদেশের একজন বিখ্যাত লেখক ও শিক্ষাবিদ।' },
+        { id:'b10', title:'মিসির আলি সমগ্র', author:'হুমায়ূন আহমেদ', publisher:'অন্যপ্রকাশ', price:720, original:900, genre:'উপন্যাস', emoji:'🔍', color:'#fce4ec', pages:'550', edition:'সমগ্র সংস্করণ', cover:'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=300&q=80', summary:'মিসির আলি হুমায়ূন আহমেদের আরেকটি বিখ্যাত চরিত্র। মনোবিজ্ঞানী মিসির আলি অলৌকিক ঘটনাগুলোর বৈজ্ঞানিক ব্যাখ্যা খোঁজেন।', authorBio:'হুমায়ূন আহমেদ (১৯৪৮–২০১২) বাংলাদেশের সবচেয়ে জনপ্রিয় ঔপন্যাসিক।' },
+        { id:'b11', title:'বিশ্ব বিজ্ঞান', author:'মুহম্মদ জাফর ইকবাল', publisher:'সময় প্রকাশন', price:320, original:380, genre:'বিজ্ঞান', emoji:'🌍', color:'#e8eaf6', pages:'280', edition:'২য় মুদ্রণ', cover:'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=300&q=80', summary:'বিশ্বের বিখ্যাত বৈজ্ঞানিক আবিষ্কার ও বিজ্ঞানীদের জীবনী নিয়ে রচিত এই বইটি বিজ্ঞানপ্রেমীদের জন্য অবশ্যপাঠ্য।', authorBio:'মুহম্মদ জাফর ইকবাল বাংলাদেশের একজন বিখ্যাত লেখক ও শিক্ষাবিদ।' },
+        { id:'b12', title:'আলোর গতি', author:'মুহম্মদ জাফর ইকবাল', publisher:'সময় প্রকাশন', price:260, original:300, genre:'বিজ্ঞান', emoji:'⚡', color:'#fff9c4', pages:'200', edition:'৩য় মুদ্রণ', cover:'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=300&q=80', summary:'আলোর গতি ও আধুনিক পদার্থবিজ্ঞানের রহস্যময় জগতে প্রবেশের একটি সহজ পথ দেখায় এই বইটি।', authorBio:'মুহম্মদ জাফর ইকবাল বাংলাদেশের একজন বিখ্যাত লেখক ও শিক্ষাবিদ।' },
     ];
 
     let currentBookFilter = 'সব';
+    let currentBookId = null;
 
     function showBookShop() {
         hideAll();
         document.getElementById('bookshop-page').style.display = 'block';
-        renderBooks(demoBooks);
+        filterBooks(document.querySelector('.book-cat-btn'), 'সব');
         window.scrollTo(0,0);
     }
 
@@ -1060,7 +1185,7 @@
         grid.innerHTML = list.map(b => {
             const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
             return `
-            <div class="book-card">
+            <div class="book-card" onclick="showBookDetails('${b.id}')">
                 <div class="book-cover" style="background:${b.color}">
                     ${b.cover ? `<img src="${b.cover}" alt="${b.title}" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=font-size:55px>${b.emoji}</span>'">` : `<span style="font-size:55px">${b.emoji}</span>`}
                     <span class="book-genre-badge">${b.genre}</span>
@@ -1073,7 +1198,7 @@
                         <span class="book-price">৳${b.price}</span>
                         ${b.original > b.price ? `<span class="book-old-price">৳${b.original}</span>` : ''}
                     </div>
-                    <button class="book-add-btn" onclick="addBookToCart('${b.id}')">🛒 Cart এ যোগ করুন</button>
+                    <button class="book-add-btn" onclick="event.stopPropagation(); addBookToCart('${b.id}')">🛒 Cart এ যোগ করুন</button>
                 </div>
             </div>`;
         }).join('');
@@ -1081,15 +1206,83 @@
 
     function filterBooks(btn, genre) {
         document.querySelectorAll('.book-cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if(btn) btn.classList.add('active');
         currentBookFilter = genre;
         renderBooks(genre === 'সব' ? demoBooks : demoBooks.filter(b => b.genre === genre));
+    }
+
+    // ===== BOOK DETAILS =====
+    function showBookDetails(bookId) {
+        const b = demoBooks.find(x => x.id === bookId);
+        if (!b) return;
+        currentBookId = bookId;
+        const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
+
+        document.getElementById('bd-cover').src = b.cover || '';
+        document.getElementById('bd-cover').onerror = function(){ this.style.display='none'; };
+        const discEl = document.getElementById('bd-disc');
+        if (disc) { discEl.style.display=''; discEl.textContent = disc+'% ছাড়'; } else discEl.style.display='none';
+        document.getElementById('bd-title').textContent = b.title;
+        document.getElementById('bd-author').textContent = 'লেখক: ' + b.author;
+        document.getElementById('bd-price').textContent = '৳' + b.price;
+        document.getElementById('bd-old').textContent = b.original > b.price ? '৳' + b.original : '';
+        document.getElementById('bd-summary').textContent = b.summary || '';
+        document.getElementById('spec-title').textContent = b.title;
+        document.getElementById('spec-author').textContent = b.author;
+        document.getElementById('spec-publisher').textContent = b.publisher || '';
+        document.getElementById('spec-genre').textContent = b.genre;
+        document.getElementById('spec-edition').textContent = b.edition || '';
+        document.getElementById('spec-pages').textContent = b.pages || '';
+        document.getElementById('bd-author-bio').textContent = b.authorBio || '';
+
+        // Related books — same genre, excluding current
+        const related = demoBooks.filter(x => x.genre === b.genre && x.id !== bookId).slice(0,6);
+        const relGrid = document.getElementById('related-books-grid');
+        relGrid.innerHTML = related.length ? related.map(r => `
+            <div class="related-book-card" onclick="showBookDetails('${r.id}')">
+                <div class="related-book-cover" style="background:${r.color}">
+                    ${r.cover ? `<img src="${r.cover}" alt="${r.title}" onerror="this.style.display='none';this.parentNode.textContent='${r.emoji}'">` : r.emoji}
+                </div>
+                <div class="related-book-info">
+                    <div class="related-book-title">${r.title}</div>
+                    <div class="related-book-price">৳${r.price}</div>
+                </div>
+            </div>`).join('')
+        : '<p style="padding:0 14px;color:#aaa;font-size:13px">একই ধরনের আর বই নেই</p>';
+
+        // Switch to summary tab
+        document.querySelectorAll('.book-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.book-tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelector('.book-tab').classList.add('active');
+        document.getElementById('tab-summary').classList.add('active');
+
+        hideAll();
+        document.getElementById('book-details-page').style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    function switchBookTab(tab, contentId) {
+        document.querySelectorAll('.book-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.book-tab-content').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(contentId).classList.add('active');
+    }
+
+    function addBookToCartFromDetails() {
+        if (currentBookId) addBookToCart(currentBookId);
+    }
+    function bookBuyNow() {
+        if (!currentBookId) return;
+        const b = demoBooks.find(x => x.id === currentBookId);
+        if (!b) return;
+        // Add to cart then open cart
+        addBookToCart(currentBookId);
+        openCart();
     }
 
     function addBookToCart(bookId) {
         const book = demoBooks.find(b => b.id === bookId);
         if (!book) return;
-        const key = 'book_' + bookId;
         const existing = cart.find(c => c.bookId === bookId);
         if (existing) existing.qty++;
         else cart.push({ bookId, qty: 1, bookData: book });
