@@ -463,7 +463,7 @@
         </div>
     </div>
     <div class="drawer-body">
-        <div class="drawer-section-label">ক্যাটাগরি</div>
+        <div class="drawer-section-label">🛒 Nobobi Store — ক্যাটাগরি</div>
         <div class="drawer-cat-item active" id="dcat-সব" onclick="drawerFilterCat('সব')">
             <span class="drawer-cat-icon">🏠</span> সব পণ্য
         </div>
@@ -477,16 +477,40 @@
             <span class="drawer-cat-icon">📦</span> অন্যান্য
         </div>
         <div class="drawer-divider"></div>
+        <div class="drawer-section-label">📚 Nobobi Book Shop — ক্যাটাগরি</div>
+        <div class="drawer-cat-item" onclick="showBookShop(); closeDrawer()">
+            <span class="drawer-cat-icon">📖</span> সব বই
+        </div>
+        <div class="drawer-cat-item" onclick="showBookShopCat('উপন্যাস'); closeDrawer()">
+            <span class="drawer-cat-icon">✍️</span> উপন্যাস
+        </div>
+        <div class="drawer-cat-item" onclick="showBookShopCat('ইসলামিক'); closeDrawer()">
+            <span class="drawer-cat-icon">🕌</span> ইসলামিক
+        </div>
+        <div class="drawer-cat-item" onclick="showBookShopCat('শিক্ষামূলক'); closeDrawer()">
+            <span class="drawer-cat-icon">🎓</span> শিক্ষামূলক
+        </div>
+        <div class="drawer-cat-item" onclick="showBookShopCat('শিশু'); closeDrawer()">
+            <span class="drawer-cat-icon">🧒</span> শিশু
+        </div>
+        <div class="drawer-cat-item" onclick="showBookShopCat('বিজ্ঞান'); closeDrawer()">
+            <span class="drawer-cat-icon">🔬</span> বিজ্ঞান
+        </div>
+        <div class="drawer-divider"></div>
         <div class="drawer-section-label">আমাদের ব্র্যান্ড</div>
+        <div class="drawer-brand-item" onclick="showHome(); closeDrawer()">
+            <span class="drawer-cat-icon">🛒</span>
+            <div><div style="font-weight:700;color:#222;font-size:13px">Nobobi Store</div><div style="font-size:11px;color:#888">ফ্যাশন ও ইলেকট্রনিক্স</div></div>
+            <span class="drawer-brand-badge" style="background:#e8f5e9;color:#1a9e3f">✅</span>
+        </div>
         <div class="drawer-brand-item" onclick="showBookShop(); closeDrawer()">
-            <span class="drawer-cat-icon">📚</span> Nobobi Book Shop
+            <span class="drawer-cat-icon">📚</span>
+            <div><div style="font-weight:700;color:#222;font-size:13px">Nobobi Book Shop</div><div style="font-size:11px;color:#888">বই, স্টেশনারি ও শিক্ষা</div></div>
             <span class="drawer-brand-badge" style="background:#e8eaf6;color:#1a237e">✅</span>
         </div>
-        <div class="drawer-brand-item" onclick="scrollToBrands(); closeDrawer()">
-            <span class="drawer-cat-icon">🛒</span> Nobobi Store
-        </div>
-        <div class="drawer-brand-item" onclick="scrollToBrands(); closeDrawer()">
-            <span class="drawer-cat-icon">💊</span> Nobobi Health
+        <div class="drawer-brand-item">
+            <span class="drawer-cat-icon">💊</span>
+            <div><div style="font-weight:700;color:#222;font-size:13px">Nobobi Health</div><div style="font-size:11px;color:#888">স্বাস্থ্য ও সৌন্দর্য</div></div>
             <span class="drawer-brand-badge">শীঘ্রই</span>
         </div>
         <div class="drawer-divider"></div>
@@ -1095,12 +1119,19 @@
     function checkoutFromCart() {
         if (!cart.length) return;
         closeCart();
-        currentProduct = cart[0].idx;
-        orderQty = cart[0].qty;
-        fillOrderForm();
-        hideAll();
-        document.getElementById('order-page').style.display = 'block';
-        window.scrollTo(0,0);
+        const first = cart[0];
+        if (first.bookId) {
+            orderQty = first.qty;
+            openBookOrderForm(first.bookId);
+        } else {
+            currentProduct = first.idx;
+            orderQty = first.qty;
+            window._bookOrderMode = false;
+            fillOrderForm();
+            hideAll();
+            document.getElementById('order-page').style.display = 'block';
+            window.scrollTo(0,0);
+        }
     }
 
     // ===== DETAILS =====
@@ -1164,27 +1195,37 @@
         updateTotal();
     }
 
-    function updateTotal() {
-        const p = getProducts()[currentProduct];
-        const subtotal = p.price * orderQty;
+    function _calcTotal() {
         const delivery = parseInt(document.getElementById('o-location').value);
+        let subtotal = 0;
+        if (window._bookOrderMode && currentBookOrder) {
+            subtotal = currentBookOrder.price * orderQty;
+        } else {
+            const p = getProducts()[currentProduct];
+            if (p) subtotal = p.price * orderQty;
+        }
         document.getElementById('o-subtotal').textContent = '৳' + subtotal.toLocaleString();
         document.getElementById('o-delivery').textContent = '৳' + delivery;
         document.getElementById('o-total').textContent = '৳' + (subtotal + delivery).toLocaleString();
     }
 
+    function updateTotal() { _calcTotal(); }
+
     function fillOrderForm() {
         const p = getProducts()[currentProduct];
+        if (!p) return;
+        window._bookOrderMode = false;
         const imgDiv = document.getElementById('o-img');
-        if (p.img) imgDiv.innerHTML = `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.textContent='${p.emoji}'">`;
+        if (p.img) imgDiv.innerHTML = `<img src="${p.img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.textContent='${p.emoji}'">`;
         else imgDiv.textContent = p.emoji;
         document.getElementById('o-name').textContent = p.name;
         document.getElementById('o-price').textContent = '৳' + p.price.toLocaleString();
         document.getElementById('o-qty').textContent = orderQty;
-        updateTotal();
+        _calcTotal();
     }
 
     function showOrder() {
+        window._bookOrderMode = false;
         orderQty = qty;
         fillOrderForm();
         hideAll();
@@ -1192,31 +1233,31 @@
         window.scrollTo(0,0);
     }
 
-    // ===== ORDER — ADMIN PANEL এ SAVE =====
+    // ===== UNIFIED ORDER SAVE =====
     function placeOrder() {
         const name = document.getElementById('o-customer').value.trim();
         const phone = document.getElementById('o-phone').value.trim();
         const address = document.getElementById('o-address').value.trim();
         if (!name || !phone || !address) { alert('❌ সব তথ্য পূরণ করুন!'); return; }
-        const p = getProducts()[currentProduct];
         const delivery = parseInt(document.getElementById('o-location').value);
-        const total = p.price * orderQty + delivery;
-        const orderId = 'ORD-' + Date.now().toString().slice(-6);
         const payment = document.getElementById('o-payment').value;
+        let productName, total, orderId;
+        orderId = 'ORD-' + Date.now().toString().slice(-6);
 
-        // Admin panel এ save (nb_orders key)
+        if (window._bookOrderMode && currentBookOrder) {
+            total = currentBookOrder.price * orderQty + delivery;
+            productName = currentBookOrder.title + ' (বই) (' + orderQty + 'টি)';
+        } else {
+            const p = getProducts()[currentProduct];
+            if (!p) return;
+            total = p.price * orderQty + delivery;
+            productName = p.name + ' (' + orderQty + 'টি)';
+        }
+
         const orders = JSON.parse(localStorage.getItem('nb_orders') || '[]');
-        orders.push({
-            id: orderId,
-            customer: name,
-            phone: phone,
-            address: address,
-            product: p.name + ' (' + orderQty + 'টি)',
-            total: total,
-            payment: payment,
-            status: 'pending',
-            date: new Date().toLocaleDateString('bn-BD')
-        });
+        orders.push({ id: orderId, customer: name, phone, address,
+            product: productName, total, payment,
+            status: 'pending', date: new Date().toLocaleDateString('bn-BD') });
         localStorage.setItem('nb_orders', JSON.stringify(orders));
 
         document.getElementById('s-orderid').textContent = orderId;
@@ -1224,6 +1265,7 @@
         document.getElementById('s-phone').textContent = phone;
         document.getElementById('s-total').textContent = '৳' + total.toLocaleString();
         cart = []; updateCartCount();
+        window._bookOrderMode = false; currentBookOrder = null;
         hideAll();
         document.getElementById('success-page').style.display = 'block';
         window.scrollTo(0,0);
@@ -1261,23 +1303,17 @@
     function showBookShop() {
         hideAll();
         document.getElementById('bookshop-page').style.display = 'block';
-        // Dynamic category buttons from admin
-        updateBookCategories();
         filterBooks(document.querySelector('.book-cat-btn'), 'সব');
         window.scrollTo(0,0);
     }
 
-    function updateBookCategories() {
-        const allBooks = getBooks();
-        const genres = [...new Set(allBooks.map(b => b.genre))];
-        const defaultGenres = ['সব', 'উপন্যাস', 'শিক্ষামূলক', 'ইসলামিক', 'শিশু', 'বিজ্ঞান'];
-        const bar = document.querySelector('.book-category-bar');
-        if (!bar) return;
-        const emojis = {'সব':'📖','উপন্যাস':'✍️','শিক্ষামূলক':'🎓','ইসলামিক':'🕌','শিশু':'🧒','বিজ্ঞান':'🔬','অন্যান্য':'📚','বই':'📚'};
-        const allGenres = ['সব', ...genres.filter(g => g !== 'সব')];
-        bar.innerHTML = allGenres.map((g, i) =>
-            `<button class="book-cat-btn${i===0?' active':''}" onclick="filterBooks(this,'${g}')">${emojis[g]||'📚'} ${g}</button>`
-        ).join('');
+    function showBookShopCat(genre) {
+        hideAll();
+        document.getElementById('bookshop-page').style.display = 'block';
+        // find and click the matching button
+        const btns = document.querySelectorAll('.book-cat-btn');
+        btns.forEach(b => { if (b.textContent.includes(genre)) filterBooks(b, genre); });
+        window.scrollTo(0,0);
     }
 
     function renderBooks(list) {
@@ -1305,50 +1341,16 @@
         }).join('');
     }
 
-    function getBooks() {
-        // Admin panel থেকে বই লোড করি
-        const saved = localStorage.getItem('nb_products');
-        let adminBooks = [];
-        if (saved) {
-            const allProducts = JSON.parse(saved);
-            // যেসব product category 'বই', 'book', 'Book', 'বই-ঘর' সেগুলো বই হিসেবে নেব
-            const bookCats = ['বই', 'book', 'Book', 'বই-ঘর', 'ইসলামিক', 'উপন্যাস', 'শিক্ষামূলক', 'শিশু', 'বিজ্ঞান'];
-            adminBooks = allProducts
-                .filter(p => bookCats.includes(p.category) || bookCats.includes(p.cat))
-                .map(p => ({
-                    id: 'admin_' + p.id,
-                    title: p.name,
-                    author: p.author || p.desc || '—',
-                    publisher: p.publisher || '—',
-                    price: p.price,
-                    original: p.original || p.price,
-                    genre: p.category || p.cat || 'অন্যান্য',
-                    emoji: p.emoji || '📚',
-                    color: '#f5f5f5',
-                    pages: p.pages || '—',
-                    edition: p.edition || '—',
-                    cover: p.img || '',
-                    summary: p.desc || '',
-                    authorBio: '',
-                    stock: p.stock,
-                }));
-        }
-        // Admin বই + demo বই মিলিয়ে দেখাব
-        // Admin এ বই থাকলে শুধু admin বই, না থাকলে demo বই
-        return adminBooks.length > 0 ? [...adminBooks, ...demoBooks] : demoBooks;
-    }
-
     function filterBooks(btn, genre) {
         document.querySelectorAll('.book-cat-btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
         currentBookFilter = genre;
-        const allBooks = getBooks();
-        renderBooks(genre === 'সব' ? allBooks : allBooks.filter(b => b.genre === genre));
+        renderBooks(genre === 'সব' ? demoBooks : demoBooks.filter(b => b.genre === genre));
     }
 
     // ===== BOOK DETAILS =====
     function showBookDetails(bookId) {
-        const b = getBooks().find(x => x.id === bookId);
+        const b = demoBooks.find(x => x.id === bookId);
         if (!b) return;
         currentBookId = bookId;
         const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
@@ -1415,10 +1417,9 @@
     let pdfCurrentBookId = null;
 
     function openPdfModal(bookId) {
-        const b = getBooks().find(x => x.id === bookId);
+        const b = demoBooks.find(x => x.id === bookId);
         if (!b) return;
         pdfCurrentBookId = bookId;
-        const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
         document.getElementById('pm-title').textContent = b.title;
         document.getElementById('pm-author').textContent = 'লেখক: ' + b.author + ' | প্রকাশক: ' + (b.publisher || '');
         document.getElementById('pm-price').textContent = '৳' + b.price;
@@ -1426,7 +1427,6 @@
         document.getElementById('pm-chips').innerHTML = [
             b.genre, b.pages ? b.pages + ' পৃষ্ঠা' : '', b.edition || ''
         ].filter(Boolean).map(c => `<span class="pdf-info-chip">${c}</span>`).join('');
-        // Show first 2 sentences of summary
         const preview = b.summary ? b.summary.split('।').slice(0,2).join('।') + '।' : '';
         document.getElementById('pm-text').textContent = preview;
         document.getElementById('pdf-modal-overlay').classList.add('open');
@@ -1454,10 +1454,10 @@
     let currentBookOrder = null;
 
     function openBookOrderForm(bookId) {
-        const b = getBooks().find(x => x.id === bookId);
+        const b = demoBooks.find(x => x.id === bookId);
         if (!b) return;
         currentBookOrder = b;
-        // Fill order form for book
+        window._bookOrderMode = true;
         const imgDiv = document.getElementById('o-img');
         imgDiv.innerHTML = b.cover
             ? `<img src="${b.cover}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.textContent='${b.emoji}'">`
@@ -1466,58 +1466,10 @@
         document.getElementById('o-price').textContent = '৳' + b.price;
         orderQty = 1;
         document.getElementById('o-qty').textContent = 1;
-        // Patch updateTotal for book
-        window._bookOrderMode = true;
-        updateTotal();
+        _calcTotal();
         hideAll();
         document.getElementById('order-page').style.display = 'block';
         window.scrollTo(0,0);
-    }
-
-    // Patch updateTotal to support book mode
-    const _origUpdateTotal = updateTotal;
-    function updateTotal() {
-        if (window._bookOrderMode && currentBookOrder) {
-            const subtotal = currentBookOrder.price * orderQty;
-            const delivery = parseInt(document.getElementById('o-location').value);
-            document.getElementById('o-subtotal').textContent = '৳' + subtotal.toLocaleString();
-            document.getElementById('o-delivery').textContent = '৳' + delivery;
-            document.getElementById('o-total').textContent = '৳' + (subtotal + delivery).toLocaleString();
-        } else {
-            _origUpdateTotal();
-        }
-    }
-
-    // Patch placeOrder for book
-    const _origPlaceOrder = placeOrder;
-    function placeOrder() {
-        if (window._bookOrderMode && currentBookOrder) {
-            const name = document.getElementById('o-customer').value.trim();
-            const phone = document.getElementById('o-phone').value.trim();
-            const address = document.getElementById('o-address').value.trim();
-            if (!name || !phone || !address) { alert('❌ সব তথ্য পূরণ করুন!'); return; }
-            const delivery = parseInt(document.getElementById('o-location').value);
-            const total = currentBookOrder.price * orderQty + delivery;
-            const orderId = 'ORD-' + Date.now().toString().slice(-6);
-            const payment = document.getElementById('o-payment').value;
-            const orders = JSON.parse(localStorage.getItem('nb_orders') || '[]');
-            orders.push({ id: orderId, customer: name, phone, address,
-                product: currentBookOrder.title + ' (বই) (' + orderQty + 'টি)',
-                total, payment, status: 'pending',
-                date: new Date().toLocaleDateString('bn-BD') });
-            localStorage.setItem('nb_orders', JSON.stringify(orders));
-            document.getElementById('s-orderid').textContent = orderId;
-            document.getElementById('s-name').textContent = name;
-            document.getElementById('s-phone').textContent = phone;
-            document.getElementById('s-total').textContent = '৳' + total.toLocaleString();
-            cart = []; updateCartCount();
-            window._bookOrderMode = false; currentBookOrder = null;
-            hideAll();
-            document.getElementById('success-page').style.display = 'block';
-            window.scrollTo(0,0);
-        } else {
-            _origPlaceOrder();
-        }
     }
 
     function addBookToCart(bookId) {
@@ -1530,8 +1482,7 @@
         showToast('📚 ' + book.title + ' cart এ যোগ হয়েছে!');
     }
 
-    // Override renderCart to handle books too
-    const _origRenderCart = renderCart;
+    // ===== UNIFIED CART RENDER (products + books) =====
     function renderCart() {
         const allProducts = getProducts();
         const body = document.getElementById('cart-body');
@@ -1541,22 +1492,21 @@
             footer.style.display = 'none'; return;
         }
         body.innerHTML = cart.map(c => {
-            let name, price, img, emoji;
+            let name, price, imgHtml, emoji;
             if (c.bookId) {
                 const b = c.bookData;
-                name = b.title; price = b.price; img = ''; emoji = b.emoji;
+                name = b.title; price = b.price; emoji = b.emoji;
+                imgHtml = b.cover ? `<img src="${b.cover}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.parentNode.textContent='${b.emoji}'">` : emoji;
             } else {
                 const p = allProducts[c.idx];
-                name = p.name; price = p.price;
-                img = p.img ? `<img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.parentNode.textContent='${p.emoji}'">` : '';
-                emoji = p.emoji;
+                if (!p) return '';
+                name = p.name; price = p.price; emoji = p.emoji;
+                imgHtml = p.img ? `<img src="${p.img}" onerror="this.style.display='none';this.parentNode.textContent='${p.emoji}'">` : emoji;
             }
-            const key = c.bookId ? `'${c.bookId}'` : c.idx;
             const qtyFn = c.bookId ? `bookCartQty('${c.bookId}',VAL)` : `cartQty(${c.idx},VAL)`;
-            const rmFn = c.bookId ? `removeBookFromCart('${c.bookId}')` : `removeFromCart(${c.idx})`;
-            return `
-            <div class="cart-item">
-                <div class="cart-item-emoji">${img || emoji}</div>
+            const rmFn  = c.bookId ? `removeBookFromCart('${c.bookId}')` : `removeFromCart(${c.idx})`;
+            return `<div class="cart-item">
+                <div class="cart-item-emoji">${imgHtml}</div>
                 <div class="cart-item-info">
                     <div class="cart-item-name">${name}</div>
                     <div class="cart-item-price">৳${(price*c.qty).toLocaleString()}</div>
@@ -1569,10 +1519,9 @@
                 <button class="cart-remove" onclick="${rmFn}">🗑️</button>
             </div>`;
         }).join('');
-        const total = cart.reduce((s,c) => {
-            if (c.bookId) return s + c.bookData.price * c.qty;
-            return s + allProducts[c.idx].price * c.qty;
-        }, 0);
+        const total = cart.reduce((s,c) => c.bookId
+            ? s + c.bookData.price * c.qty
+            : s + (allProducts[c.idx]?.price||0) * c.qty, 0);
         document.getElementById('cart-total-price').textContent = '৳' + total.toLocaleString();
         footer.style.display = 'block';
     }
