@@ -1261,8 +1261,23 @@
     function showBookShop() {
         hideAll();
         document.getElementById('bookshop-page').style.display = 'block';
+        // Dynamic category buttons from admin
+        updateBookCategories();
         filterBooks(document.querySelector('.book-cat-btn'), 'সব');
         window.scrollTo(0,0);
+    }
+
+    function updateBookCategories() {
+        const allBooks = getBooks();
+        const genres = [...new Set(allBooks.map(b => b.genre))];
+        const defaultGenres = ['সব', 'উপন্যাস', 'শিক্ষামূলক', 'ইসলামিক', 'শিশু', 'বিজ্ঞান'];
+        const bar = document.querySelector('.book-category-bar');
+        if (!bar) return;
+        const emojis = {'সব':'📖','উপন্যাস':'✍️','শিক্ষামূলক':'🎓','ইসলামিক':'🕌','শিশু':'🧒','বিজ্ঞান':'🔬','অন্যান্য':'📚','বই':'📚'};
+        const allGenres = ['সব', ...genres.filter(g => g !== 'সব')];
+        bar.innerHTML = allGenres.map((g, i) =>
+            `<button class="book-cat-btn${i===0?' active':''}" onclick="filterBooks(this,'${g}')">${emojis[g]||'📚'} ${g}</button>`
+        ).join('');
     }
 
     function renderBooks(list) {
@@ -1290,16 +1305,50 @@
         }).join('');
     }
 
+    function getBooks() {
+        // Admin panel থেকে বই লোড করি
+        const saved = localStorage.getItem('nb_products');
+        let adminBooks = [];
+        if (saved) {
+            const allProducts = JSON.parse(saved);
+            // যেসব product category 'বই', 'book', 'Book', 'বই-ঘর' সেগুলো বই হিসেবে নেব
+            const bookCats = ['বই', 'book', 'Book', 'বই-ঘর', 'ইসলামিক', 'উপন্যাস', 'শিক্ষামূলক', 'শিশু', 'বিজ্ঞান'];
+            adminBooks = allProducts
+                .filter(p => bookCats.includes(p.category) || bookCats.includes(p.cat))
+                .map(p => ({
+                    id: 'admin_' + p.id,
+                    title: p.name,
+                    author: p.author || p.desc || '—',
+                    publisher: p.publisher || '—',
+                    price: p.price,
+                    original: p.original || p.price,
+                    genre: p.category || p.cat || 'অন্যান্য',
+                    emoji: p.emoji || '📚',
+                    color: '#f5f5f5',
+                    pages: p.pages || '—',
+                    edition: p.edition || '—',
+                    cover: p.img || '',
+                    summary: p.desc || '',
+                    authorBio: '',
+                    stock: p.stock,
+                }));
+        }
+        // Admin বই + demo বই মিলিয়ে দেখাব
+        // Admin এ বই থাকলে শুধু admin বই, না থাকলে demo বই
+        return adminBooks.length > 0 ? [...adminBooks, ...demoBooks] : demoBooks;
+    }
+
     function filterBooks(btn, genre) {
         document.querySelectorAll('.book-cat-btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
         currentBookFilter = genre;
-        renderBooks(genre === 'সব' ? demoBooks : demoBooks.filter(b => b.genre === genre));
+        const allBooks = getBooks();
+        renderBooks(genre === 'সব' ? allBooks : allBooks.filter(b => b.genre === genre));
     }
 
     // ===== BOOK DETAILS =====
     function showBookDetails(bookId) {
-        const b = demoBooks.find(x => x.id === bookId);
+        const b = getBooks().find(x => x.id === bookId);
         if (!b) return;
         currentBookId = bookId;
         const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
@@ -1366,7 +1415,7 @@
     let pdfCurrentBookId = null;
 
     function openPdfModal(bookId) {
-        const b = demoBooks.find(x => x.id === bookId);
+        const b = getBooks().find(x => x.id === bookId);
         if (!b) return;
         pdfCurrentBookId = bookId;
         const disc = b.original > b.price ? Math.round((1 - b.price/b.original)*100) : 0;
@@ -1405,7 +1454,7 @@
     let currentBookOrder = null;
 
     function openBookOrderForm(bookId) {
-        const b = demoBooks.find(x => x.id === bookId);
+        const b = getBooks().find(x => x.id === bookId);
         if (!b) return;
         currentBookOrder = b;
         // Fill order form for book
