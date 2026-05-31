@@ -245,94 +245,115 @@
         .det-page { background: #f0f2f5; min-height: 100vh; }
         .det-breadcrumb { padding: 6px 16px 10px; font-size: 12px; color: #888; }
         .det-breadcrumb span { color: #1a9e3f; cursor: pointer; }
-        .det-main { background: white; margin: 0 10px 10px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-        .det-gallery { display: flex; gap: 10px; padding: 14px; }
-        .det-thumbs { display: flex; flex-direction: column; gap: 7px; }
-        .det-thumb { width: 58px; height: 58px; border-radius: 8px; overflow: hidden; border: 2px solid #e0e0e0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #f9f9f9; font-size: 20px; flex-shrink: 0; }
+
+        /* TWO COLUMN LAYOUT */
+        .det-main { background: white; margin: 0 10px 10px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); display: flex; flex-wrap: wrap; }
+
+        /* LEFT — GALLERY */
+        .det-left { width: 55%; padding: 16px; display: flex; gap: 10px; min-width: 280px; }
+        .det-thumbs { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
+        .det-thumb { width: 60px; height: 60px; border-radius: 8px; overflow: hidden; border: 2px solid #e0e0e0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #f9f9f9; font-size: 20px; flex-shrink: 0; }
         .det-thumb.active { border-color: #f7a800; }
         .det-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .det-main-img { flex: 1; height: 280px; border-radius: 10px; background: #f9f9f9; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 90px; }
-        .det-main-img img { width: 100%; height: 100%; object-fit: contain; }
-        .det-info { padding: 14px 16px 18px; border-top: 1px solid #f0f0f0; }
-        .det-title { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; line-height: 1.4; }
+        .det-main-img { flex: 1; border-radius: 10px; background: #f9f9f9; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 90px; min-height: 300px; }
+        .det-main-img img { width: 100%; height: 100%; object-fit: contain; max-height: 380px; }
+
+        /* RIGHT — INFO */
+        .det-info { flex: 1; min-width: 260px; padding: 18px 18px 20px; border-left: 1px solid #f0f0f0; }
+        .det-title { font-size: 20px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; line-height: 1.4; }
         .det-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-        .det-stars { color: #f7a800; font-size: 15px; }
+        .det-stars { color: #f7a800; font-size: 16px; }
         .det-rating-count { font-size: 12px; color: #1a9e3f; cursor: pointer; }
-        .det-price-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 14px; flex-wrap: wrap; }
-        .det-price { font-size: 26px; font-weight: 900; color: #f7a800; }
+        .det-price-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 16px; flex-wrap: wrap; }
+        .det-price { font-size: 28px; font-weight: 900; color: #f7a800; }
         .det-old-price { font-size: 15px; color: #aaa; text-decoration: line-through; }
         .det-save-badge { background: #1a9e3f; color: white; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px; }
-        .det-qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+        .det-qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
         .det-qty-label { font-size: 14px; font-weight: 600; color: #444; }
         .det-qty-box { display: flex; align-items: center; border: 1.5px solid #ddd; border-radius: 8px; overflow: hidden; }
-        .det-qty-box button { width: 36px; height: 36px; background: #f5f5f5; border: none; font-size: 18px; cursor: pointer; font-weight: bold; color: #333; }
+        .det-qty-box button { width: 36px; height: 36px; background: #f5f5f5; border: none; font-size: 20px; cursor: pointer; font-weight: bold; color: #333; }
         .det-qty-box button:hover { background: #e8e8e8; }
-        .det-qty-box span { width: 44px; text-align: center; font-size: 15px; font-weight: 700; border-left: 1.5px solid #ddd; border-right: 1.5px solid #ddd; height: 36px; line-height: 36px; display: block; }
-        .det-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 10px; }
-        .det-add-cart { background: #f7a800; color: white; border: none; padding: 13px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .det-qty-box span { width: 44px; text-align: center; font-size: 16px; font-weight: 700; border-left: 1.5px solid #ddd; border-right: 1.5px solid #ddd; height: 36px; line-height: 36px; display: block; }
+
+        /* ACTION BUTTONS — full width rows */
+        .det-actions { display: flex; flex-direction: column; gap: 9px; margin-bottom: 12px; }
+        .det-btn-row { display: flex; gap: 9px; }
+        .det-add-cart { flex: 1; background: #f7a800; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; }
         .det-add-cart:hover { background: #e09600; }
-        .det-buy-now { background: #1a2a1a; color: white; border: none; padding: 13px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; }
+        .det-buy-now { flex: 1; background: #1a2a1a; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 800; cursor: pointer; }
         .det-buy-now:hover { background: #111; }
-        .det-whatsapp { background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .det-call { background: #1565c0; color: white; border: none; padding: 11px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .det-brand-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; margin-top: 10px; }
+        .det-whatsapp { flex: 1; background: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+        .det-whatsapp:hover { background: #1ebe5d; }
+        .det-call { flex: 1; background: #1565c0; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
+        .det-call:hover { background: #0d47a1; }
+        .det-brand-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; margin-top: 4px; }
         .det-brand-label { font-size: 13px; color: #666; }
         .det-brand-name { font-size: 14px; font-weight: 800; color: #1a1a1a; }
 
         /* FREQUENTLY BOUGHT TOGETHER */
-        .det-fbt { background: white; margin: 0 10px 10px; border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-        .det-fbt-title { font-size: 14px; font-weight: 800; color: #1a1a1a; margin-bottom: 12px; }
-        .det-fbt-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .det-fbt-item { display: flex; flex-direction: column; align-items: center; border: 2px solid #e0e0e0; border-radius: 10px; padding: 9px; width: 110px; flex-shrink: 0; cursor: pointer; position: relative; background: #fafafa; transition: 0.2s; }
+        .det-fbt { background: white; margin: 0 10px 10px; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .det-fbt-title { font-size: 15px; font-weight: 800; color: #1a1a1a; margin-bottom: 14px; }
+        .det-fbt-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .det-fbt-item { display: flex; flex-direction: column; align-items: center; border: 2px solid #e0e0e0; border-radius: 10px; padding: 10px; width: 120px; flex-shrink: 0; cursor: pointer; position: relative; background: #fafafa; transition: 0.2s; }
         .det-fbt-item:hover, .det-fbt-item.selected { border-color: #f7a800; background: #fffde7; }
-        .det-fbt-img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; font-size: 32px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .det-fbt-img img { width: 100%; height: 100%; object-fit: cover; }
-        .det-fbt-name { font-size: 10px; color: #333; font-weight: 600; text-align: center; margin-top: 4px; line-height: 1.3; }
-        .det-fbt-price { font-size: 12px; color: #c62828; font-weight: 800; margin-top: 2px; }
-        .det-fbt-check { position: absolute; bottom: 5px; right: 5px; width: 15px; height: 15px; accent-color: #f7a800; cursor: pointer; }
-        .det-fbt-plus { font-size: 18px; color: #bbb; flex-shrink: 0; }
-        .det-fbt-total { background: #f7a800; color: white; border-radius: 10px; padding: 11px 12px; text-align: center; min-width: 105px; flex-shrink: 0; margin-left: auto; }
-        .det-fbt-total .fbt-total-price { font-size: 16px; font-weight: 900; }
-        .det-fbt-total .fbt-save { font-size: 10px; opacity: 0.9; margin-bottom: 5px; }
-        .det-fbt-total button { background: white; color: #f7a800; border: none; padding: 5px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; }
-        .det-fbt-total button:hover { background: #fff3; color: white; }
+        .det-fbt-img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; font-size: 34px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .det-fbt-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+        .det-fbt-name { font-size: 11px; color: #333; font-weight: 600; text-align: center; margin-top: 5px; line-height: 1.3; }
+        .det-fbt-price { font-size: 13px; color: #c62828; font-weight: 800; margin-top: 3px; }
+        .det-fbt-check { position: absolute; bottom: 6px; right: 6px; width: 16px; height: 16px; accent-color: #f7a800; cursor: pointer; }
+        .det-fbt-plus { font-size: 20px; color: #bbb; flex-shrink: 0; font-weight: 300; }
+        .det-fbt-total { background: #f7a800; color: white; border-radius: 10px; padding: 14px; text-align: center; min-width: 120px; flex-shrink: 0; margin-left: auto; }
+        .det-fbt-total .fbt-total-price { font-size: 18px; font-weight: 900; }
+        .det-fbt-total .fbt-count { font-size: 11px; opacity: 0.9; margin-bottom: 8px; }
+        .det-fbt-total button { background: white; color: #f7a800; border: none; padding: 7px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; width: 100%; }
+        .det-fbt-total button:hover { background: #fffde7; }
 
         /* TABS */
         .det-tabs { background: white; margin: 0 10px 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; }
         .det-tabs-header { display: flex; border-bottom: 2px solid #f0f0f0; }
-        .det-tab-btn { flex: 1; padding: 12px 6px; font-size: 12px; font-weight: 700; color: #888; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .det-tab-btn { flex: 1; padding: 14px 8px; font-size: 13px; font-weight: 700; color: #888; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
         .det-tab-btn.active { color: #1a9e3f; border-bottom-color: #1a9e3f; }
-        .det-tab-pane { display: none; padding: 16px; }
+        .det-tab-pane { display: none; padding: 18px; }
         .det-tab-pane.active { display: block; }
-        .det-desc-title { font-size: 15px; font-weight: 800; color: #1a1a1a; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 3px solid #f7a800; display: inline-block; }
-        .det-desc-text { font-size: 13px; color: #555; line-height: 1.9; }
-        .det-key-features { margin-top: 10px; padding-left: 0; list-style: none; }
-        .det-key-features li { font-size: 13px; color: #444; padding: 4px 0 4px 18px; position: relative; }
+        .det-desc-title { font-size: 16px; font-weight: 800; color: #1a1a1a; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 3px solid #f7a800; display: inline-block; }
+        .det-desc-text { font-size: 13px; color: #555; line-height: 1.9; margin-bottom: 12px; }
+        .det-key-features { padding-left: 0; list-style: none; margin: 0; }
+        .det-key-features li { font-size: 13px; color: #444; padding: 5px 0 5px 20px; position: relative; }
         .det-key-features li::before { content: '✓'; position: absolute; left: 0; color: #1a9e3f; font-weight: 800; }
-        .det-review-summary { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0f0f0; }
-        .det-review-big { font-size: 44px; font-weight: 900; color: #1a1a1a; line-height: 1; text-align: center; }
-        .det-review-big span { display: block; font-size: 12px; color: #f7a800; font-weight: 400; margin-top: 2px; }
+        .det-review-summary { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0; }
+        .det-review-big { font-size: 48px; font-weight: 900; color: #1a1a1a; line-height: 1; text-align: center; }
+        .det-review-big span { display: block; font-size: 13px; color: #f7a800; font-weight: 400; margin-top: 3px; }
         .det-review-bars { flex: 1; }
-        .det-bar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-        .det-bar-label { font-size: 10px; color: #888; width: 24px; text-align: right; }
-        .det-bar-track { flex: 1; height: 5px; background: #f0f0f0; border-radius: 3px; }
+        .det-bar-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+        .det-bar-label { font-size: 11px; color: #888; width: 26px; text-align: right; }
+        .det-bar-track { flex: 1; height: 6px; background: #f0f0f0; border-radius: 3px; }
         .det-bar-fill { height: 100%; background: #f7a800; border-radius: 3px; }
-        .det-review-card { border: 1px solid #f0f0f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-        .det-review-top { display: flex; justify-content: space-between; }
+        .det-review-card { border: 1px solid #f0f0f0; border-radius: 10px; padding: 13px; margin-bottom: 10px; }
+        .det-review-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
         .det-reviewer { font-size: 13px; font-weight: 700; }
         .det-review-date { font-size: 11px; color: #aaa; }
-        .det-review-stars { color: #f7a800; font-size: 13px; margin: 3px 0; }
+        .det-review-stars { color: #f7a800; font-size: 14px; margin-bottom: 5px; }
         .det-review-txt { font-size: 13px; color: #555; line-height: 1.6; }
 
         /* RELATED PRODUCTS */
         .related-products-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; padding: 0 10px 28px; }
 
-        /* OLD COMPAT (order form) */
+        /* OLD COMPAT */
         .qty-box { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
         .qty-box button { width: 34px; height: 34px; border: 2px solid #1a9e3f; background: white; color: #1a9e3f; font-size: 18px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .qty-box span { font-size: 17px; font-weight: bold; min-width: 28px; text-align: center; }
         .buy-btn { background: #f7a800; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-right: 8px; margin-bottom: 8px; }
         .cart-btn-big { background: #1a9e3f; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
+
+        @media (max-width: 660px) {
+            .det-main { flex-direction: column; }
+            .det-left { width: 100%; flex-direction: column-reverse; }
+            .det-thumbs { flex-direction: row; }
+            .det-main-img { min-height: 220px; }
+            .det-info { border-left: none; border-top: 1px solid #f0f0f0; }
+            .det-fbt-item { width: 100px; }
+            .det-fbt-total { margin-left: 0; width: 100%; }
+        }
         .form-input { width: 100%; padding: 9px 12px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial; }
         .form-input:focus { border-color: #1a9e3f; }
         .form-label { font-size: 13px; color: #555; font-weight: bold; display: block; margin-bottom: 4px; }
@@ -739,19 +760,20 @@
         <span onclick="showHome()">Home</span> › <span onclick="showHome()">Products</span> › <span id="det-bc-name" style="color:#555;cursor:default"></span>
     </div>
 
-    <!-- MAIN PRODUCT CARD -->
+    <!-- MAIN CARD: LEFT gallery + RIGHT info -->
     <div class="det-main">
-        <!-- IMAGE GALLERY -->
-        <div class="det-gallery">
+        <!-- LEFT: IMAGE GALLERY -->
+        <div class="det-left">
             <div class="det-thumbs" id="det-thumbs"></div>
             <div class="det-main-img" id="det-main-img"></div>
         </div>
-        <!-- INFO -->
+
+        <!-- RIGHT: PRODUCT INFO -->
         <div class="det-info">
             <div class="det-title" id="det-title"></div>
             <div class="det-rating">
-                <span class="det-stars" id="det-stars">★★★★☆</span>
-                <span class="det-rating-count" id="det-rating-count">26 Reviews</span>
+                <span class="det-stars">★★★★☆</span>
+                <span class="det-rating-count">26 Reviews</span>
             </div>
             <div class="det-price-row">
                 <span class="det-price" id="det-price"></span>
@@ -767,14 +789,14 @@
                 </div>
             </div>
             <div class="det-actions">
-                <button class="det-add-cart" onclick="addToCartFromDetails()">🛒 ADD TO CART</button>
-                <button class="det-buy-now" onclick="showOrder()">BUY NOW</button>
-                <a href="https://wa.me/8801734728569" target="_blank" style="text-decoration:none">
-                    <button class="det-whatsapp" style="width:100%">💬 Order On WhatsApp</button>
-                </a>
-                <a href="tel:+8801734728569" style="text-decoration:none">
-                    <button class="det-call" style="width:100%">📞 Call For Order</button>
-                </a>
+                <div class="det-btn-row">
+                    <button class="det-add-cart" onclick="addToCartFromDetails()">🛒 ADD TO CART</button>
+                    <button class="det-buy-now" onclick="showOrder()">BUY NOW</button>
+                </div>
+                <div class="det-btn-row">
+                    <a href="https://wa.me/8801734728569" target="_blank" class="det-whatsapp">💬 Order On WhatsApp</a>
+                    <a href="tel:+8801734728569" class="det-call">📞 Call For Order</a>
+                </div>
             </div>
             <div class="det-brand-row">
                 <span class="det-brand-label">Brand:</span>
@@ -789,7 +811,7 @@
         <div class="det-fbt-row" id="det-fbt-row"></div>
     </div>
 
-    <!-- TABS: Description / Product Video / Reviews -->
+    <!-- TABS -->
     <div class="det-tabs">
         <div class="det-tabs-header">
             <button class="det-tab-btn active" onclick="switchDetTab(this,'det-tab-desc')">Description</button>
@@ -802,7 +824,7 @@
             <ul class="det-key-features" id="det-key-features"></ul>
         </div>
         <div class="det-tab-pane" id="det-tab-video">
-            <p style="color:#aaa;font-size:13px;text-align:center;padding:20px 0">📹 কোনো ভিডিও যোগ করা হয়নি</p>
+            <p style="color:#aaa;font-size:13px;text-align:center;padding:24px 0">📹 কোনো ভিডিও যোগ করা হয়নি</p>
         </div>
         <div class="det-tab-pane" id="det-tab-review">
             <div class="det-review-summary">
@@ -819,7 +841,7 @@
         </div>
     </div>
 
-    <!-- RELATED PRODUCTS -->
+    <!-- RELATED -->
     <div class="section-title" style="margin:6px 0 8px 10px">🛍️ একই ক্যাটাগরির পণ্য</div>
     <div class="related-products-row" id="related-products-grid"></div>
 </div>
