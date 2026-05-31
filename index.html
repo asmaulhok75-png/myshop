@@ -240,27 +240,99 @@
         }
         @keyframes pulse { 0%,100%{box-shadow:0 4px 14px rgba(37,211,102,0.5)} 50%{box-shadow:0 4px 22px rgba(37,211,102,0.8)} }
 
-        /* DETAILS PAGE */
-        .back-btn { background: none; border: none; color: #1a9e3f; font-size: 15px; cursor: pointer; padding: 16px; display: flex; align-items: center; gap: 6px; font-weight: bold; }
-        .details-container { display: flex; gap: 24px; padding: 0 16px 32px; flex-wrap: wrap; }
-        .details-img { background: white; border-radius: 12px; width: 100%; max-width: 300px; height: 260px; display: flex; align-items: center; justify-content: center; font-size: 100px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; flex-shrink: 0; }
-        .details-img img { width: 100%; height: 100%; object-fit: cover; }
-        .details-info { flex: 1; min-width: 240px; }
-        .details-info h1 { font-size: 22px; color: #222; margin-bottom: 8px; }
-        .details-price { font-size: 26px; color: #1a9e3f; font-weight: bold; margin-bottom: 5px; }
-        .details-old { font-size: 14px; color: #aaa; text-decoration: line-through; margin-bottom: 14px; }
-        .details-desc { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 18px; }
-        .details-meta { background: white; border-radius: 10px; padding: 14px; margin-bottom: 18px; }
-        .details-meta table { width: 100%; }
-        .details-meta td { padding: 7px 0; font-size: 13px; color: #555; border-bottom: 1px solid #f0f0f0; }
-        .details-meta td:first-child { font-weight: bold; color: #333; width: 110px; }
+        /* DETAILS PAGE — Amazon/Shosti Style */
+        .back-btn { background: none; border: none; color: #1a9e3f; font-size: 15px; cursor: pointer; padding: 14px 16px; display: flex; align-items: center; gap: 6px; font-weight: bold; }
+        .det-page { background: #f0f2f5; min-height: 100vh; }
+        .det-breadcrumb { padding: 6px 16px 10px; font-size: 12px; color: #888; }
+        .det-breadcrumb span { color: #1a9e3f; cursor: pointer; }
+        .det-main { background: white; margin: 0 10px 10px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .det-gallery { display: flex; gap: 10px; padding: 14px; }
+        .det-thumbs { display: flex; flex-direction: column; gap: 7px; }
+        .det-thumb { width: 58px; height: 58px; border-radius: 8px; overflow: hidden; border: 2px solid #e0e0e0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #f9f9f9; font-size: 20px; flex-shrink: 0; }
+        .det-thumb.active { border-color: #f7a800; }
+        .det-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .det-main-img { flex: 1; height: 280px; border-radius: 10px; background: #f9f9f9; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 90px; }
+        .det-main-img img { width: 100%; height: 100%; object-fit: contain; }
+        .det-info { padding: 14px 16px 18px; border-top: 1px solid #f0f0f0; }
+        .det-title { font-size: 18px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; line-height: 1.4; }
+        .det-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .det-stars { color: #f7a800; font-size: 15px; }
+        .det-rating-count { font-size: 12px; color: #1a9e3f; cursor: pointer; }
+        .det-price-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 14px; flex-wrap: wrap; }
+        .det-price { font-size: 26px; font-weight: 900; color: #f7a800; }
+        .det-old-price { font-size: 15px; color: #aaa; text-decoration: line-through; }
+        .det-save-badge { background: #1a9e3f; color: white; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px; }
+        .det-qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+        .det-qty-label { font-size: 14px; font-weight: 600; color: #444; }
+        .det-qty-box { display: flex; align-items: center; border: 1.5px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .det-qty-box button { width: 36px; height: 36px; background: #f5f5f5; border: none; font-size: 18px; cursor: pointer; font-weight: bold; color: #333; }
+        .det-qty-box button:hover { background: #e8e8e8; }
+        .det-qty-box span { width: 44px; text-align: center; font-size: 15px; font-weight: 700; border-left: 1.5px solid #ddd; border-right: 1.5px solid #ddd; height: 36px; line-height: 36px; display: block; }
+        .det-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 10px; }
+        .det-add-cart { background: #f7a800; color: white; border: none; padding: 13px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .det-add-cart:hover { background: #e09600; }
+        .det-buy-now { background: #1a2a1a; color: white; border: none; padding: 13px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; }
+        .det-buy-now:hover { background: #111; }
+        .det-whatsapp { background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .det-call { background: #1565c0; color: white; border: none; padding: 11px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .det-brand-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px; margin-top: 10px; }
+        .det-brand-label { font-size: 13px; color: #666; }
+        .det-brand-name { font-size: 14px; font-weight: 800; color: #1a1a1a; }
+
+        /* FREQUENTLY BOUGHT TOGETHER */
+        .det-fbt { background: white; margin: 0 10px 10px; border-radius: 12px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .det-fbt-title { font-size: 14px; font-weight: 800; color: #1a1a1a; margin-bottom: 12px; }
+        .det-fbt-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .det-fbt-item { display: flex; flex-direction: column; align-items: center; border: 2px solid #e0e0e0; border-radius: 10px; padding: 9px; width: 110px; flex-shrink: 0; cursor: pointer; position: relative; background: #fafafa; transition: 0.2s; }
+        .det-fbt-item:hover, .det-fbt-item.selected { border-color: #f7a800; background: #fffde7; }
+        .det-fbt-img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; font-size: 32px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .det-fbt-img img { width: 100%; height: 100%; object-fit: cover; }
+        .det-fbt-name { font-size: 10px; color: #333; font-weight: 600; text-align: center; margin-top: 4px; line-height: 1.3; }
+        .det-fbt-price { font-size: 12px; color: #c62828; font-weight: 800; margin-top: 2px; }
+        .det-fbt-check { position: absolute; bottom: 5px; right: 5px; width: 15px; height: 15px; accent-color: #f7a800; cursor: pointer; }
+        .det-fbt-plus { font-size: 18px; color: #bbb; flex-shrink: 0; }
+        .det-fbt-total { background: #f7a800; color: white; border-radius: 10px; padding: 11px 12px; text-align: center; min-width: 105px; flex-shrink: 0; margin-left: auto; }
+        .det-fbt-total .fbt-total-price { font-size: 16px; font-weight: 900; }
+        .det-fbt-total .fbt-save { font-size: 10px; opacity: 0.9; margin-bottom: 5px; }
+        .det-fbt-total button { background: white; color: #f7a800; border: none; padding: 5px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; width: 100%; }
+        .det-fbt-total button:hover { background: #fff3; color: white; }
+
+        /* TABS */
+        .det-tabs { background: white; margin: 0 10px 10px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; }
+        .det-tabs-header { display: flex; border-bottom: 2px solid #f0f0f0; }
+        .det-tab-btn { flex: 1; padding: 12px 6px; font-size: 12px; font-weight: 700; color: #888; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .det-tab-btn.active { color: #1a9e3f; border-bottom-color: #1a9e3f; }
+        .det-tab-pane { display: none; padding: 16px; }
+        .det-tab-pane.active { display: block; }
+        .det-desc-title { font-size: 15px; font-weight: 800; color: #1a1a1a; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 3px solid #f7a800; display: inline-block; }
+        .det-desc-text { font-size: 13px; color: #555; line-height: 1.9; }
+        .det-key-features { margin-top: 10px; padding-left: 0; list-style: none; }
+        .det-key-features li { font-size: 13px; color: #444; padding: 4px 0 4px 18px; position: relative; }
+        .det-key-features li::before { content: '✓'; position: absolute; left: 0; color: #1a9e3f; font-weight: 800; }
+        .det-review-summary { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0f0f0; }
+        .det-review-big { font-size: 44px; font-weight: 900; color: #1a1a1a; line-height: 1; text-align: center; }
+        .det-review-big span { display: block; font-size: 12px; color: #f7a800; font-weight: 400; margin-top: 2px; }
+        .det-review-bars { flex: 1; }
+        .det-bar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .det-bar-label { font-size: 10px; color: #888; width: 24px; text-align: right; }
+        .det-bar-track { flex: 1; height: 5px; background: #f0f0f0; border-radius: 3px; }
+        .det-bar-fill { height: 100%; background: #f7a800; border-radius: 3px; }
+        .det-review-card { border: 1px solid #f0f0f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        .det-review-top { display: flex; justify-content: space-between; }
+        .det-reviewer { font-size: 13px; font-weight: 700; }
+        .det-review-date { font-size: 11px; color: #aaa; }
+        .det-review-stars { color: #f7a800; font-size: 13px; margin: 3px 0; }
+        .det-review-txt { font-size: 13px; color: #555; line-height: 1.6; }
+
+        /* RELATED PRODUCTS */
+        .related-products-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; padding: 0 10px 28px; }
+
+        /* OLD COMPAT (order form) */
         .qty-box { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
         .qty-box button { width: 34px; height: 34px; border: 2px solid #1a9e3f; background: white; color: #1a9e3f; font-size: 18px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .qty-box span { font-size: 17px; font-weight: bold; min-width: 28px; text-align: center; }
         .buy-btn { background: #f7a800; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-right: 8px; margin-bottom: 8px; }
         .cart-btn-big { background: #1a9e3f; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
-
-        /* ORDER & FORM */
         .form-input { width: 100%; padding: 9px 12px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; font-family: Arial; }
         .form-input:focus { border-color: #1a9e3f; }
         .form-label { font-size: 13px; color: #555; font-weight: bold; display: block; margin-bottom: 4px; }
@@ -660,35 +732,95 @@
     <div class="footer-bottom">© 2025 <a href="#">Nobobi</a> — All Rights Reserved.</div>
 </div>
 
-<!-- DETAILS PAGE -->
-<div id="details-page" style="display:none; background:#f4f4f4; min-height:100vh;">
+<!-- DETAILS PAGE — Amazon/Shosti Style -->
+<div id="details-page" style="display:none;" class="det-page">
     <button class="back-btn" onclick="showHome()">← ফিরে যান</button>
-    <div class="details-container">
-        <div class="details-img" id="d-img"></div>
-        <div class="details-info">
-            <h1 id="d-name"></h1>
-            <div class="details-price" id="d-price"></div>
-            <div class="details-old" id="d-old"></div>
-            <div class="details-desc" id="d-desc"></div>
-            <div class="details-meta">
-                <table>
-                    <tr><td>ক্যাটাগরি</td><td id="d-cat"></td></tr>
-                    <tr><td>স্টক</td><td id="d-stock"></td></tr>
-                    <tr><td>ডেলিভারি</td><td>২-৩ কার্যদিবস</td></tr>
-                    <tr><td>ওয়ারেন্টি</td><td id="d-warranty"></td></tr>
-                </table>
+    <div class="det-breadcrumb">
+        <span onclick="showHome()">Home</span> › <span onclick="showHome()">Products</span> › <span id="det-bc-name" style="color:#555;cursor:default"></span>
+    </div>
+
+    <!-- MAIN PRODUCT CARD -->
+    <div class="det-main">
+        <!-- IMAGE GALLERY -->
+        <div class="det-gallery">
+            <div class="det-thumbs" id="det-thumbs"></div>
+            <div class="det-main-img" id="det-main-img"></div>
+        </div>
+        <!-- INFO -->
+        <div class="det-info">
+            <div class="det-title" id="det-title"></div>
+            <div class="det-rating">
+                <span class="det-stars" id="det-stars">★★★★☆</span>
+                <span class="det-rating-count" id="det-rating-count">26 Reviews</span>
             </div>
-            <div class="qty-box">
-                <button onclick="changeQty(-1)">−</button>
-                <span id="qty">1</span>
-                <button onclick="changeQty(1)">+</button>
+            <div class="det-price-row">
+                <span class="det-price" id="det-price"></span>
+                <span class="det-old-price" id="det-old-price"></span>
+                <span class="det-save-badge" id="det-save-badge" style="display:none"></span>
             </div>
-            <button class="buy-btn" onclick="showOrder()">এখনই কিনুন</button>
-            <button class="cart-btn-big" onclick="addToCartFromDetails()">🛒 Cart এ যোগ করুন</button>
+            <div class="det-qty-row">
+                <span class="det-qty-label">Quantity:</span>
+                <div class="det-qty-box">
+                    <button onclick="changeQty(-1)">−</button>
+                    <span id="qty">1</span>
+                    <button onclick="changeQty(1)">+</button>
+                </div>
+            </div>
+            <div class="det-actions">
+                <button class="det-add-cart" onclick="addToCartFromDetails()">🛒 ADD TO CART</button>
+                <button class="det-buy-now" onclick="showOrder()">BUY NOW</button>
+                <a href="https://wa.me/8801734728569" target="_blank" style="text-decoration:none">
+                    <button class="det-whatsapp" style="width:100%">💬 Order On WhatsApp</button>
+                </a>
+                <a href="tel:+8801734728569" style="text-decoration:none">
+                    <button class="det-call" style="width:100%">📞 Call For Order</button>
+                </a>
+            </div>
+            <div class="det-brand-row">
+                <span class="det-brand-label">Brand:</span>
+                <span class="det-brand-name" id="det-brand">Nobobi</span>
+            </div>
         </div>
     </div>
+
+    <!-- FREQUENTLY BOUGHT TOGETHER -->
+    <div class="det-fbt">
+        <div class="det-fbt-title">Frequently bought together</div>
+        <div class="det-fbt-row" id="det-fbt-row"></div>
+    </div>
+
+    <!-- TABS: Description / Product Video / Reviews -->
+    <div class="det-tabs">
+        <div class="det-tabs-header">
+            <button class="det-tab-btn active" onclick="switchDetTab(this,'det-tab-desc')">Description</button>
+            <button class="det-tab-btn" onclick="switchDetTab(this,'det-tab-video')">Product Video</button>
+            <button class="det-tab-btn" onclick="switchDetTab(this,'det-tab-review')">Customer Reviews</button>
+        </div>
+        <div class="det-tab-pane active" id="det-tab-desc">
+            <div class="det-desc-title">Product Details</div>
+            <div class="det-desc-text" id="det-desc-text"></div>
+            <ul class="det-key-features" id="det-key-features"></ul>
+        </div>
+        <div class="det-tab-pane" id="det-tab-video">
+            <p style="color:#aaa;font-size:13px;text-align:center;padding:20px 0">📹 কোনো ভিডিও যোগ করা হয়নি</p>
+        </div>
+        <div class="det-tab-pane" id="det-tab-review">
+            <div class="det-review-summary">
+                <div class="det-review-big">4.2<span>★★★★☆</span></div>
+                <div class="det-review-bars">
+                    <div class="det-bar-row"><span class="det-bar-label">5★</span><div class="det-bar-track"><div class="det-bar-fill" style="width:60%"></div></div></div>
+                    <div class="det-bar-row"><span class="det-bar-label">4★</span><div class="det-bar-track"><div class="det-bar-fill" style="width:25%"></div></div></div>
+                    <div class="det-bar-row"><span class="det-bar-label">3★</span><div class="det-bar-track"><div class="det-bar-fill" style="width:10%"></div></div></div>
+                    <div class="det-bar-row"><span class="det-bar-label">2★</span><div class="det-bar-track"><div class="det-bar-fill" style="width:3%"></div></div></div>
+                    <div class="det-bar-row"><span class="det-bar-label">1★</span><div class="det-bar-track"><div class="det-bar-fill" style="width:2%"></div></div></div>
+                </div>
+            </div>
+            <div id="det-reviews-list"></div>
+        </div>
+    </div>
+
     <!-- RELATED PRODUCTS -->
-    <div class="section-title" style="margin-top:4px">🛍️ একই ক্যাটাগরির পণ্য</div>
+    <div class="section-title" style="margin:6px 0 8px 10px">🛍️ একই ক্যাটাগরির পণ্য</div>
     <div class="related-products-row" id="related-products-grid"></div>
 </div>
 
@@ -1134,41 +1266,151 @@
         }
     }
 
-    // ===== DETAILS =====
+    // ===== DETAILS — Amazon/Shosti Style =====
     function showDetails(index) {
         const allProducts = getProducts();
         currentProduct = index;
         const p = allProducts[index];
-        const imgDiv = document.getElementById('d-img');
-        if (p.img) imgDiv.innerHTML = `<img src="${p.img}" alt="${p.name}" onerror="this.parentNode.textContent='${p.emoji}'">`;
-        else imgDiv.textContent = p.emoji;
-        document.getElementById('d-name').textContent = p.name;
-        document.getElementById('d-price').textContent = '৳' + p.price.toLocaleString();
-        document.getElementById('d-old').textContent = p.original && p.original > p.price ? '৳' + p.original.toLocaleString() : '';
-        document.getElementById('d-desc').textContent = p.desc || '';
-        document.getElementById('d-cat').textContent = p.cat || p.category || '';
-        document.getElementById('d-stock').textContent = p.stock || 'আছে';
-        document.getElementById('d-warranty').textContent = p.warranty || 'নেই';
         qty = 1;
-        document.getElementById('qty').textContent = qty;
+
+        // Breadcrumb
+        document.getElementById('det-bc-name').textContent = p.name;
+
+        // Gallery — main image + thumbnails
+        const imgs = p.img ? [p.img, p.img, p.img] : [];
+        const mainImg = document.getElementById('det-main-img');
+        mainImg.innerHTML = p.img
+            ? `<img src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.parentNode.textContent='${p.emoji}'">`
+            : p.emoji;
+
+        const thumbsEl = document.getElementById('det-thumbs');
+        if (imgs.length) {
+            thumbsEl.innerHTML = imgs.map((src, i) => `
+                <div class="det-thumb ${i===0?'active':''}" onclick="switchDetImg('${src}', this)">
+                    <img src="${src}" onerror="this.textContent='${p.emoji}';this.querySelector('img')&&(this.querySelector('img').style.display='none')">
+                </div>`).join('');
+        } else {
+            thumbsEl.innerHTML = `<div class="det-thumb active">${p.emoji}</div>`;
+        }
+
+        // Info
+        document.getElementById('det-title').textContent = p.name;
+        document.getElementById('qty').textContent = 1;
+
+        const disc = p.original && p.original > p.price
+            ? Math.round((1 - p.price/p.original)*100) : 0;
+        document.getElementById('det-price').textContent = '৳' + p.price.toLocaleString();
+        const oldEl = document.getElementById('det-old-price');
+        const saveEl = document.getElementById('det-save-badge');
+        if (disc) {
+            oldEl.textContent = '৳' + p.original.toLocaleString();
+            saveEl.textContent = 'Save ' + disc + '%';
+            saveEl.style.display = 'inline-block';
+        } else { oldEl.textContent = ''; saveEl.style.display = 'none'; }
+
+        document.getElementById('det-brand').textContent = p.brand || 'Nobobi';
+
+        // Description tab
+        document.getElementById('det-desc-text').textContent = p.desc || 'এই পণ্যের কোনো বিবরণ যোগ করা হয়নি।';
+        const features = p.features ? p.features : [
+            p.stock ? 'স্টক: ' + p.stock : 'স্টকে আছে',
+            'ডেলিভারি: ২-৩ কার্যদিবস',
+            p.warranty && p.warranty !== 'নেই' ? 'ওয়ারেন্টি: ' + p.warranty : null,
+            p.cat ? 'ক্যাটাগরি: ' + p.cat : null,
+        ].filter(Boolean);
+        document.getElementById('det-key-features').innerHTML = features.map(f => `<li>${f}</li>`).join('');
+
+        // Reset tabs
+        document.querySelectorAll('.det-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.det-tab-pane').forEach(b => b.classList.remove('active'));
+        document.querySelector('.det-tab-btn').classList.add('active');
+        document.getElementById('det-tab-desc').classList.add('active');
+
+        // Demo reviews
+        document.getElementById('det-reviews-list').innerHTML = [
+            { name:'রহিম উদ্দিন', stars:'★★★★★', text:'অনেক ভালো পণ্য। দ্রুত ডেলিভারি পেয়েছি। আবার কিনবো।', date:'২ দিন আগে' },
+            { name:'সুমাইয়া খানম', stars:'★★★★☆', text:'কোয়ালিটি ভালো, দামটা একটু বেশি মনে হলো।', date:'৫ দিন আগে' },
+        ].map(r => `<div class="det-review-card">
+            <div class="det-review-top"><span class="det-reviewer">${r.name}</span><span class="det-review-date">${r.date}</span></div>
+            <div class="det-review-stars">${r.stars}</div>
+            <div class="det-review-txt">${r.text}</div>
+        </div>`).join('');
+
+        // Frequently Bought Together — 2 random products from same/other cats
+        const others = allProducts.filter((x,i) => i !== index).slice(0,2);
+        const fbtItems = [p, ...others];
+        let fbtSelected = fbtItems.map(() => true);
+
+        function renderFBT() {
+            const total = fbtItems.reduce((s, x, i) => fbtSelected[i] ? s + x.price : s, 0);
+            const count = fbtSelected.filter(Boolean).length;
+            document.getElementById('det-fbt-row').innerHTML = fbtItems.map((x, i) => `
+                <div class="det-fbt-item ${fbtSelected[i]?'selected':''}" id="fbt-item-${i}" onclick="toggleFbt(${i})">
+                    <div class="det-fbt-img">
+                        ${x.img ? `<img src="${x.img}" onerror="this.parentNode.textContent='${x.emoji}'">` : x.emoji}
+                    </div>
+                    <div class="det-fbt-name">${x.name}</div>
+                    <div class="det-fbt-price">৳${x.price.toLocaleString()}</div>
+                    <input type="checkbox" class="det-fbt-check" ${fbtSelected[i]?'checked':''} onclick="event.stopPropagation();toggleFbt(${i})">
+                </div>
+                ${i < fbtItems.length-1 ? '<span class="det-fbt-plus">+</span>' : ''}
+            `).join('') + `
+                <div class="det-fbt-total">
+                    <div class="fbt-total-price">৳${total.toLocaleString()}</div>
+                    <div class="fbt-save">= ${count} Items</div>
+                    <button onclick="addFbtToCart()">Add ${count} items to cart</button>
+                </div>`;
+        }
+
+        window._fbtItems = fbtItems;
+        window._fbtSelected = fbtSelected;
+        window.toggleFbt = function(i) {
+            window._fbtSelected[i] = !window._fbtSelected[i];
+            renderFBT();
+        };
+        window.addFbtToCart = function() {
+            window._fbtItems.forEach((x, i) => {
+                if (!window._fbtSelected[i]) return;
+                const idx = allProducts.findIndex(a => a.id === x.id);
+                if (idx < 0) return;
+                const ex = cart.find(c => c.idx === idx);
+                if (ex) ex.qty++; else cart.push({ idx, qty: 1 });
+            });
+            updateCartCount();
+            showToast('✅ পণ্যগুলো Cart এ যোগ হয়েছে!');
+        };
+        renderFBT();
 
         // Related products — same category
         const cat = p.cat || p.category || '';
-        const related = allProducts.filter((x, i) => i !== index && (x.cat||x.category) === cat).slice(0,6);
+        const related = allProducts.filter((x,i) => i !== index && (x.cat||x.category) === cat).slice(0,6);
         const relGrid = document.getElementById('related-products-grid');
-        relGrid.innerHTML = related.length ? related.map(r => {
+        relGrid.innerHTML = related.map(r => {
             const ri = allProducts.findIndex(x => x.id === r.id);
-            const disc = r.original && r.original > r.price ? Math.round((1-r.price/r.original)*100) : 0;
+            const rd = r.original && r.original > r.price ? Math.round((1-r.price/r.original)*100) : 0;
             return `<div class="card" onclick="showDetails(${ri})">
-                <div class="card-img" style="height:110px">${r.img ? `<img src="${r.img}" alt="${r.name}" onerror="this.style.display='none';this.parentNode.textContent='${r.emoji}'">` : r.emoji}
-                ${disc ? `<span class="card-badge">${disc}%</span>` : ''}</div>
+                <div class="card-img">${r.img?`<img src="${r.img}" onerror="this.style.display='none';this.parentNode.textContent='${r.emoji}'">`:r.emoji}
+                ${rd?`<span class="card-badge">${rd}%</span>`:''}</div>
                 <div class="card-body"><h3>${r.name}</h3>
                 <span class="price">৳${r.price.toLocaleString()}</span></div></div>`;
-        }).join('') : '<p style="color:#aaa;font-size:13px;padding:0 14px">একই ক্যাটাগরিতে আর পণ্য নেই</p>';
+        }).join('') || '<p style="padding:0 4px;color:#aaa;font-size:13px;grid-column:1/-1">আর পণ্য নেই</p>';
 
         hideAll();
         document.getElementById('details-page').style.display = 'block';
         window.scrollTo(0,0);
+    }
+
+    function switchDetImg(src, thumbEl) {
+        document.getElementById('det-main-img').innerHTML = `<img src="${src}">`;
+        document.querySelectorAll('.det-thumb').forEach(t => t.classList.remove('active'));
+        thumbEl.classList.add('active');
+    }
+
+    function switchDetTab(btn, paneId) {
+        document.querySelectorAll('.det-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.det-tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(paneId).classList.add('active');
     }
 
     function showHome() {
