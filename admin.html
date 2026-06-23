@@ -172,6 +172,24 @@
     /* PRODUCT EMOJI */
     .product-emoji { font-size: 24px; }
 
+    /* IMAGE GALLERY */
+    .gallery-area { border: 2px dashed #ddd; border-radius: 10px; padding: 14px; margin-bottom: 14px; background: #fafafa; }
+    .gallery-area > label { font-size: 13px; color: #555; font-weight: 600; display: block; margin-bottom: 10px; }
+    .gallery-thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; min-height: 80px; align-items: flex-start; }
+    .gallery-thumb-wrap { position: relative; width: 74px; }
+    .gallery-thumb-wrap img { width: 74px; height: 74px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0; display: block; cursor: pointer; }
+    .gallery-thumb-wrap.is-main img { border-color: #1976d2; box-shadow: 0 0 0 2px #1976d2; }
+    .gallery-thumb-del { position: absolute; top: -5px; right: -5px; background: #e53935; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .gallery-main-tag { text-align: center; font-size: 9px; color: #1976d2; font-weight: 700; margin-top: 3px; }
+    .gallery-add-btn { width: 74px; height: 74px; border: 2px dashed #bbb; border-radius: 8px; background: #f0f4ff; color: #999; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1px; transition: 0.2s; }
+    .gallery-add-btn:hover { border-color: #1976d2; color: #1976d2; }
+    .gallery-add-btn small { font-size: 9px; }
+    .gallery-url-row { display: flex; gap: 8px; margin-top: 4px; }
+    .gallery-url-row input { flex: 1; padding: 7px 10px; border: 1.5px solid #ddd; border-radius: 6px; font-size: 12px; outline: none; }
+    .gallery-url-row input:focus { border-color: #1976d2; }
+    .gallery-url-row button { background: #1976d2; color: white; border: none; border-radius: 6px; padding: 7px 12px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+    .gallery-hint { font-size: 11px; color: #aaa; margin-top: 6px; }
+
     /* NOTIFICATION */
     .notif {
       position: fixed; top: 70px; right: 20px; z-index: 9999;
@@ -300,7 +318,7 @@
         <div class="card">
           <table>
             <thead><tr>
-              <th>পণ্য</th><th>ক্যাটাগরি</th><th>দাম</th>
+              <th>ছবি</th><th>পণ্য</th><th>ক্যাটাগরি</th><th>দাম</th>
               <th>ছাড়</th><th>স্টক</th><th>অ্যাকশন</th>
             </tr></thead>
             <tbody id="products-body"></tbody>
@@ -411,6 +429,18 @@
       <label>পণ্যের ইমোজি</label>
       <input type="text" id="p-emoji" placeholder="যেমন: 👕" maxlength="4" />
     </div>
+
+    <!-- IMAGE GALLERY -->
+    <div class="gallery-area">
+      <label>📸 ছবির গ্যালারি <span style="font-weight:400;color:#aaa">(প্রথম ছবি = মূল ছবি)</span></label>
+      <div class="gallery-thumbs" id="gallery-thumbs"></div>
+      <div class="gallery-url-row">
+        <input type="text" id="gallery-url-input" placeholder="ছবির URL দিন যেমন: https://i.imgur.com/abc.jpg" />
+        <button onclick="addGalleryImage()">+ যোগ করুন</button>
+      </div>
+      <div class="gallery-hint">💡 ছবিতে ক্লিক করলে মূল ছবি হবে। প্রথম ছবি দোকানে দেখাবে।</div>
+    </div>
+
     <div class="form-group">
       <label>বিবরণ</label>
       <textarea id="p-desc" placeholder="পণ্যের বিবরণ লিখুন..."></textarea>
@@ -493,6 +523,9 @@
 
 <!-- NOTIFICATION -->
 <div class="notif" id="notif"></div>
+
+<!-- HIDDEN FILE INPUT FOR GALLERY -->
+<input type="file" id="gallery-file-input" accept="image/*" multiple style="display:none" onchange="handleGalleryFileUpload(event)">
 
 <script>
 // ===== DATA =====
@@ -612,9 +645,14 @@ function renderProducts() {
     tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">📦</div><p>কোনো পণ্য নেই</p></div></td></tr>';
     return;
   }
-  tbody.innerHTML = filtered.map(p => `
+  tbody.innerHTML = filtered.map(p => {
+    const imgHtml = p.images && p.images.length
+      ? `<img src="${p.images[0]}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid #eee" onerror="this.style.display='none'">`
+      : `<span style="font-size:28px">${p.emoji||'📦'}</span>`;
+    return `
     <tr>
-      <td><span style="font-size:20px">${p.emoji||'📦'}</span> <b>${p.name}</b></td>
+      <td style="text-align:center">${imgHtml}</td>
+      <td><b>${p.name}</b></td>
       <td>${p.category}</td>
       <td>৳${p.price.toLocaleString()}</td>
       <td>${p.discount ? `<span class="badge badge-red">${p.discount}% ছাড়</span>` : '—'}</td>
@@ -623,15 +661,59 @@ function renderProducts() {
         <button class="btn btn-warning btn-sm" onclick="openProductModal(${p.id})">✏️ এডিট</button>
         <button class="btn btn-danger btn-sm" style="margin-left:4px" onclick="deleteProduct(${p.id})">🗑️</button>
       </td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
+}
+
+// ===== IMAGE GALLERY =====
+let galleryImages = []; // array of URLs
+let galleryMainIdx = 0;
+
+function renderGallery() {
+  const wrap = document.getElementById('gallery-thumbs');
+  wrap.innerHTML = galleryImages.map((url, i) => `
+    <div class="gallery-thumb-wrap ${i===galleryMainIdx?'is-main':''}" title="${i===galleryMainIdx?'মূল ছবি':'ক্লিক করলে মূল ছবি হবে'}">
+      <img src="${url}" onerror="this.src=''" onclick="setMainGalleryImg(${i})">
+      <button class="gallery-thumb-del" onclick="removeGalleryImg(${i})" title="মুছুন">×</button>
+      ${i===galleryMainIdx ? '<div class="gallery-main-tag">✓ মূল</div>' : ''}
+    </div>
+  `).join('') + `
+    <div>
+      <div class="gallery-add-btn" onclick="document.getElementById('gallery-file-input').click()">
+        📁<small>ফাইল</small>
+      </div>
+    </div>`;
+}
+
+function setMainGalleryImg(i) {
+  galleryMainIdx = i;
+  renderGallery();
+}
+
+function removeGalleryImg(i) {
+  galleryImages.splice(i, 1);
+  if (galleryMainIdx >= galleryImages.length) galleryMainIdx = Math.max(0, galleryImages.length - 1);
+  renderGallery();
+}
+
+function addGalleryImage() {
+  const url = document.getElementById('gallery-url-input').value.trim();
+  if (!url) { showNotif('URL দিন!', true); return; }
+  if (galleryImages.includes(url)) { showNotif('এই ছবি আগেই আছে!', true); return; }
+  galleryImages.push(url);
+  if (galleryImages.length === 1) galleryMainIdx = 0;
+  document.getElementById('gallery-url-input').value = '';
+  renderGallery();
 }
 
 function openProductModal(id) {
   const { products, categories } = loadData();
-  // populate category select
   const sel = document.getElementById('p-category');
   sel.innerHTML = categories.map(c => `<option value="${c.name}">${c.emoji} ${c.name}</option>`).join('');
+
+  // Reset gallery
+  galleryImages = [];
+  galleryMainIdx = 0;
 
   if (id) {
     const p = products.find(x => x.id === id);
@@ -645,11 +727,21 @@ function openProductModal(id) {
     document.getElementById('p-category').value = p.category;
     document.getElementById('p-emoji').value = p.emoji || '';
     document.getElementById('p-desc').value = p.desc || '';
+    // Load existing images
+    if (p.images && p.images.length) {
+      galleryImages = [...p.images];
+      galleryMainIdx = p.mainImgIdx || 0;
+    } else if (p.img) {
+      galleryImages = [p.img];
+      galleryMainIdx = 0;
+    }
   } else {
     document.getElementById('product-modal-title').textContent = 'নতুন পণ্য যোগ করুন';
     document.getElementById('edit-product-id').value = '';
     ['p-name','p-price','p-original','p-discount','p-stock','p-emoji','p-desc'].forEach(id => document.getElementById(id).value = '');
   }
+
+  renderGallery();
   document.getElementById('product-modal').classList.add('open');
 }
 
@@ -672,6 +764,9 @@ function saveProduct() {
     category: document.getElementById('p-category').value,
     emoji: document.getElementById('p-emoji').value || '📦',
     desc: document.getElementById('p-desc').value,
+    images: [...galleryImages],
+    mainImgIdx: galleryMainIdx,
+    img: galleryImages.length ? galleryImages[galleryMainIdx] : '',
   };
 
   let updated;
@@ -800,6 +895,20 @@ function saveOrder() {
   renderOrders(currentFilter);
   renderDashboard();
   showNotif('অর্ডার আপডেট হয়েছে ✅');
+}
+
+function handleGalleryFileUpload(event) {
+  const files = Array.from(event.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      galleryImages.push(e.target.result);
+      if (galleryImages.length === 1) galleryMainIdx = 0;
+      renderGallery();
+    };
+    reader.readAsDataURL(file);
+  });
+  event.target.value = '';
 }
 
 // ===== CATEGORIES =====
